@@ -1,6 +1,10 @@
 spring:
   application:
     name: hometown
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 
   #?????
   datasource:
@@ -17,3 +21,10 @@ mybatis:
     map-underscore-to-camel-case: true
   #??mybatis??
   mapper-locations: classpath:com/mjc/mapper/*.xml
+
+#????????
+web:
+  upload-path: D:/Code/image  # ??????????????
+  image-max-size: 5MB      # ??????
+  allowed-image-types: image/jpeg,image/png,image/gif,image/bmp  # ???????
+
