@@ -51,4 +51,33 @@ public class CultureServiceImpl implements CultureService {
         culture.setUpdateTime(LocalDateTime.now());
         cultureMapper.insertCulture(culture);
     }
+
+    /**
+     * 根据id获取文化
+     * @param id
+     * @return
+     */
+    @Override
+    public Culture getCulture(Integer id) {
+        Culture culture = cultureMapper.getById(id);
+        return culture;
+    }
+
+    /*
+    * 修改文化
+     */
+    @Override
+    public void updateCulture(Culture culture) {
+        culture.setUpdateTime(LocalDateTime.now());
+        cultureMapper.updateCulture(culture);
+    }
+
+    /**
+     * 根据id批量删除文化
+     * @param ids
+     */
+    @Override
+    public void deleteCulture(List<Integer> ids) {
+        cultureMapper.deleteCulture(ids);
+    }
 }

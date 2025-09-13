@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/cultures")
@@ -38,5 +40,35 @@ public class CultureController {
         log.info("添加文化: {}", culture);
         cultureService.insertCulture(culture);
         return Result.success(culture);
+    }
+
+    /**
+     * 根据id查询文化
+     * @return
+     */
+    @GetMapping("/{id}")
+    public Result getCultureById(@PathVariable Integer id){
+        log.info("查询文件的id是: {}", id);
+        Culture culture = cultureService.getCulture(id);
+        return Result.success(culture);
+    }
+
+    @PutMapping
+    public Result updateCulture(@RequestBody Culture culture){
+        log.info("更新文化: {}", culture);
+        cultureService.updateCulture(culture);
+        return Result.success();
+    }
+
+    /**
+     * 根据id批量删除文化
+     * @param ids
+     * @return
+     */
+    @DeleteMapping("/{ids}")
+    public Result deleteCulture(@PathVariable List<Integer> ids){
+        log.info("批量删除文化: {}", ids);
+        cultureService.deleteCulture(ids);
+        return Result.success();
     }
 }
