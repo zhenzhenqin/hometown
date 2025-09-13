@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mjc.mapper.UserMapper">
+    <!--更新用户基本信息
+        <set>标签用来替换set关键字，可以自动帮助我们生成set关键字，同时可以自动去除掉更新字段后面多余的逗号
+    -->
+    <update id="updateUser">
+        update user
+        <set>
+            <if test="username != null and username !=''">username = #{username},</if>
+            <if test="realName != null and realName !=''">real_name = #{realName},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="phone != null and phone !=''">phone = #{phone},</if>
+            <if test="introduction != null and introduction !=''">introduction = #{introduction},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>
+
