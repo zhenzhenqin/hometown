@@ -74,7 +74,7 @@ Node.js 16+ (前端开发)
 
 **API 接口文档**
 **完整的 API 接口文档请参考：飞书接口文档**
-完整链接在:https://gitee.com/mzz6666/hometown?source=header_my_projects
+完整链接在:https://acnhk3go2b65.feishu.cn/wiki/QqEcwrNuGiiKfPkIBolcEMz6n1b
 **主要接口模块**
 _用户管理_
 GET /user - 查询用户信息

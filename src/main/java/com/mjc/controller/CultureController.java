@@ -53,6 +53,11 @@ public class CultureController {
         return Result.success(culture);
     }
 
+    /**
+     * 修改文化
+     * @param culture
+     * @return
+     */
     @PutMapping
     public Result updateCulture(@RequestBody Culture culture){
         log.info("更新文化: {}", culture);
