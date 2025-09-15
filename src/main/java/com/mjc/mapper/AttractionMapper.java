@@ -46,4 +46,11 @@ public interface AttractionMapper {
      * @param ids
      */
     void deleteByIds(List<Integer> ids);
+
+    /**
+     * 查询所有景点
+     * @return
+     */
+    @Select("select * from attraction")
+    List<Attraction> findAttraction();
 }

@@ -80,4 +80,14 @@ public class AttractionServiceImpl implements AttractionService {
     public void deleteByIds(List<Integer> ids) {
         attractionMapper.deleteByIds(ids);
     }
+
+    /**
+     * 查询所有景点
+     * @return
+     */
+    @Override
+    public List<Attraction> findAttraction() {
+        List<Attraction> list = attractionMapper.findAttraction();
+        return list;
+    }
 }

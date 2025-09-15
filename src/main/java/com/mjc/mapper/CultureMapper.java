@@ -46,4 +46,11 @@ public interface CultureMapper {
      * @param ids
      */
     void deleteCulture(List<Integer> ids);
+
+    /**
+     * 查询所有文化
+     * @return
+     */
+    @Select("select * from culture")
+    List<Culture> findCulture();
 }

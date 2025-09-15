@@ -49,4 +49,15 @@ public class UserController {
         userService.updateUser(user);
         return Result.success();
     }
+
+    /**
+     * 查询用户
+     * @return
+     */
+    @GetMapping("/all")
+    public Result findUser(){
+        log.info("查询用户");
+        User user = userService.findUser();
+        return Result.success(user);
+    }
 }

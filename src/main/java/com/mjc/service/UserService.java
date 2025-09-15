@@ -22,4 +22,10 @@ public interface UserService {
      * @param user
      */
     void updateUser(User user);
+
+    /**
+     * 查询所有用户
+     * @return
+     */
+    User findUser();
 }

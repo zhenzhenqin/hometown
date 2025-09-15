@@ -38,4 +38,10 @@ public interface CultureService {
     * 根据id批量删除文化
      */
     void deleteCulture(List<Integer> ids);
+
+    /**
+     * 查询所有文化
+     * @return
+     */
+    List<Culture> findCulture();
 }

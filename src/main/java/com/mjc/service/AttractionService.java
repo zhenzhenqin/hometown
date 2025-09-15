@@ -39,4 +39,9 @@ public interface AttractionService {
      * @param ids
      */
     void deleteByIds(List<Integer> ids);
+
+    /*
+     * 查询所有景点
+     */
+    List<Attraction> findAttraction();
 }

@@ -82,4 +82,14 @@ public class SpecialtiesServiceImpl implements SpecialtiesService {
     public void deleteByIds(List<Integer> ids) {
         specialtiesMapper.deleteByIds(ids);
     }
+
+    /**
+     * 查询所有特产
+     * @return
+     */
+    @Override
+    public List<Specialties> findSpecialties() {
+        List<Specialties> specialtiesList = specialtiesMapper.findSpecialties();
+        return specialtiesList;
+    }
 }

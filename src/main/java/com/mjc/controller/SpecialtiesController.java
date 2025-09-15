@@ -76,4 +76,10 @@ public class SpecialtiesController {
         specialtiesService.deleteByIds(ids);
         return Result.success();
     }
+
+    @GetMapping("/all")
+    public Result findSpecialties(){
+        List<Specialties> specialties = specialtiesService.findSpecialties();
+        return Result.success(specialties);
+    }
 }

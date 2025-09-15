@@ -80,4 +80,14 @@ public class CultureServiceImpl implements CultureService {
     public void deleteCulture(List<Integer> ids) {
         cultureMapper.deleteCulture(ids);
     }
+
+    /**
+     * 查询所有文化
+     * @return
+     */
+    @Override
+    public List<Culture> findCulture() {
+        List<Culture> cultureList = cultureMapper.findCulture();
+        return cultureList;
+    }
 }

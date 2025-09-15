@@ -76,4 +76,15 @@ public class CultureController {
         cultureService.deleteCulture(ids);
         return Result.success();
     }
+
+    /**
+     * 查询所有文化
+     * @return
+     */
+    @GetMapping("/all")
+    public Result findCulture() {
+        log.info("查询所有文化");
+        List<Culture> cultures = cultureService.findCulture();
+        return Result.success(cultures);
+    }
 }

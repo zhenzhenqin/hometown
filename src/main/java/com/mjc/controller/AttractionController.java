@@ -78,4 +78,14 @@ public class AttractionController {
         attractionService.deleteByIds(ids);
         return Result.success();
     }
+
+    /**
+     * 查询所有景点
+     * @return
+     */
+    @GetMapping("/all")
+    public Result findAttraction(){
+        List<Attraction> list = attractionService.findAttraction();
+        return Result.success(list);
+    }
 }

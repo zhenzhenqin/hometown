@@ -39,4 +39,10 @@ public interface SpecialtiesService {
      * @param ids
      */
     void deleteByIds(List<Integer> ids);
+
+    /**
+     * 查询所有特产
+     * @return
+     */
+    List<Specialties> findSpecialties();
 }

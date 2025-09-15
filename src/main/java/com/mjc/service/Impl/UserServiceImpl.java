@@ -47,4 +47,14 @@ public class UserServiceImpl implements UserService {
         user.setUpdateTime(LocalDateTime.now());
         userMapper.updateUser(user);
     }
+
+    /**
+     *  查询用户
+     * @return
+     */
+    @Override
+    public User findUser() {
+        User user = userMapper.findUser();
+        return user;
+    }
 }

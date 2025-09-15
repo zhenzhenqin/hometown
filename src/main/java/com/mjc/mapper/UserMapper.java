@@ -28,4 +28,11 @@ public interface UserMapper {
      * @param user
      */
     void updateUser(User user);
+
+    /**
+     * 查询用户
+     * @return
+     */
+    @Select("select * from user")
+    User findUser();
 }

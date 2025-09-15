@@ -47,4 +47,11 @@ public interface SpecialtiesMapper {
      * @param ids
      */
     void deleteByIds(List<Integer> ids);
+
+    /**
+     * 查询所有特产
+     * @return
+     */
+    @Select("select * from specialty")
+    List<Specialties> findSpecialties();
 }
