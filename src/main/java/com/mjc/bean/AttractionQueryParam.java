@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 
+/**
+ * author mjc
+ */
 @Data
 public class AttractionQueryParam {
     private String name; //景点名称

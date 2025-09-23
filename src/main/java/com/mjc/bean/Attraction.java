@@ -3,10 +3,12 @@ package com.mjc.bean;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+/**
+ * author mjc
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

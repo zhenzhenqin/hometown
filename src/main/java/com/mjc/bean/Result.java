@@ -2,6 +2,9 @@ package com.mjc.bean;
 
 import lombok.Data;
 
+/**
+ * author mjc
+ */
 @Data
 public class Result {
 

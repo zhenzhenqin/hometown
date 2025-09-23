@@ -5,6 +5,8 @@ import com.mjc.bean.AttractionQueryParam;
 import com.mjc.bean.PageResult;
 import com.mjc.bean.Result;
 import com.mjc.service.AttractionService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Slf4j
+@Tag(name = "景区相关接口")
 @RestController
 @RequestMapping("/attractions")
 public class AttractionController {
@@ -25,6 +28,7 @@ public class AttractionController {
      * @return
      */
     @GetMapping
+    @Operation(summary = "景区分页查询")
     public Result list(AttractionQueryParam attractionQueryParam) {
         log.info("条件分页查询: {}", attractionQueryParam);
         PageResult page = attractionService.list(attractionQueryParam);
@@ -37,6 +41,7 @@ public class AttractionController {
      * @return
      */
     @PostMapping
+    @Operation(summary = "新增景区")
     public Result addAttraction(@RequestBody Attraction attraction) {
         log.info("添加景点: {}", attraction);
         attractionService.addAttraction(attraction);
@@ -49,6 +54,7 @@ public class AttractionController {
      * @return
      */
     @GetMapping("/{id}")
+    @Operation(summary = "查询景区")
     public Result getById(@PathVariable Integer id) {
         log.info("查询id为{}的景点", id);
         Attraction attraction = attractionService.getById(id);
@@ -61,6 +67,7 @@ public class AttractionController {
      * @return
      */
     @PutMapping
+    @Operation(summary = "修改景区")
     public Result updateAttraction(@RequestBody Attraction attraction) {
         log.info("修改景点: {}", attraction);
         attractionService.updateAttraction(attraction);
@@ -73,6 +80,7 @@ public class AttractionController {
      * @return
      */
     @DeleteMapping("/{ids}")
+    @Operation(summary = "删除景区")
     public Result deleteByIds(@PathVariable List<Integer> ids) {
         log.info("删除id为{}的景点", ids);
         attractionService.deleteByIds(ids);
@@ -84,6 +92,7 @@ public class AttractionController {
      * @return
      */
     @GetMapping("/all")
+    @Operation(summary = "查询所有景点")
     public Result findAttraction(){
         List<Attraction> list = attractionService.findAttraction();
         return Result.success(list);

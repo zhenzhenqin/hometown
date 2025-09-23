@@ -3,11 +3,14 @@ package com.mjc.controller;
 import com.mjc.bean.Result;
 import com.mjc.bean.User;
 import com.mjc.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
+@Tag(name = "用户相关接口")
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -20,6 +23,7 @@ public class UserController {
      * @return
      */
     @GetMapping()
+    @Operation(summary = "查询用户")
     public Result getUser(){
         log.info("查询用户");
         User user = userService.getUser();
@@ -32,6 +36,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/{id}")
+    @Operation(summary = "根据id回显用户信息")
     public Result getUserById(@PathVariable Integer id){
         log.info("根据id回显用户信息: {}", id);
         User user = userService.getUserById(id);
@@ -44,6 +49,7 @@ public class UserController {
      * @return
      */
     @PutMapping()
+    @Operation(summary = "更新用户")
     public Result updateUser(@RequestBody User user){
         log.info("更新用户: {}", user);
         userService.updateUser(user);
@@ -55,6 +61,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/all")
+    @Operation(summary = "查询用户")
     public Result findUser(){
         log.info("查询用户");
         User user = userService.findUser();

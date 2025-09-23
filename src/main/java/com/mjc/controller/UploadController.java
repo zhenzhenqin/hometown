@@ -2,6 +2,8 @@ package com.mjc.controller;
 
 import com.mjc.bean.Result;
 import com.mjc.utils.AliyunOSSOperator;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.UUID;
 
 @Slf4j
+@Tag(name = "上传文件相关接口")
 @RestController
 public class UploadController {
 
@@ -17,6 +20,7 @@ public class UploadController {
     private AliyunOSSOperator aliyunOSSOperator;
 
     @PostMapping("/upload")
+    @Operation(summary = "上传文件")
     public Result upload(MultipartFile file) throws Exception {
         log.info("上传文件：{}", file);
         if (!file.isEmpty()) {

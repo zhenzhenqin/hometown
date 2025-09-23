@@ -5,6 +5,8 @@ import com.mjc.bean.Result;
 import com.mjc.bean.Specialties;
 import com.mjc.bean.SpecialtiesQueryParam;
 import com.mjc.service.SpecialtiesService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Slf4j
+@Tag(name = "特产相关接口")
 @RestController
 @RequestMapping("/specialties")
 public class SpecialtiesController {
@@ -24,6 +27,7 @@ public class SpecialtiesController {
      * @return
      */
     @GetMapping()
+    @Operation(summary = "特产分页查询")
     public Result list(SpecialtiesQueryParam specialtiesQueryParam){
         log.info("specialtiesQueryParam:{}",specialtiesQueryParam);
         PageResult pageResult = specialtiesService.list(specialtiesQueryParam);
@@ -36,6 +40,7 @@ public class SpecialtiesController {
      * @return
      */
     @PostMapping
+    @Operation(summary = "新增特产")
     public Result addSpecialties(@RequestBody Specialties specialties){
         log.info("新增加的特产:{}",specialties);
         specialtiesService.add(specialties);
@@ -47,6 +52,7 @@ public class SpecialtiesController {
      * @return
      */
     @GetMapping("/{id}")
+    @Operation(summary = "查询特产")
     public Result getById(@PathVariable Integer id){
         log.info("根据id查询特产: {}",id);
         Specialties specialties = specialtiesService.getById(id);
@@ -59,6 +65,7 @@ public class SpecialtiesController {
      * @return
      */
     @PutMapping
+    @Operation(summary = "修改特产")
     public Result updateSpecialties(@RequestBody Specialties specialties){
         log.info("修改特产: {}",specialties);
         specialtiesService.update(specialties);
@@ -71,6 +78,7 @@ public class SpecialtiesController {
      * @return
      */
     @DeleteMapping("/{ids}")
+    @Operation(summary = "删除特产")
     public Result deleteByIds(@PathVariable List<Integer> ids){
         log.info("删除特产的id列表: {}",ids);
         specialtiesService.deleteByIds(ids);
@@ -78,6 +86,7 @@ public class SpecialtiesController {
     }
 
     @GetMapping("/all")
+    @Operation(summary = "查询所有特产")
     public Result findSpecialties(){
         List<Specialties> specialties = specialtiesService.findSpecialties();
         return Result.success(specialties);
