@@ -14,7 +14,7 @@ import java.util.UUID;
 @Slf4j
 @Tag(name = "上传文件相关接口")
 @RestController
-public class UploadController {
+public class UploadController { 
 
     @Autowired
     private AliyunOSSOperator aliyunOSSOperator;
