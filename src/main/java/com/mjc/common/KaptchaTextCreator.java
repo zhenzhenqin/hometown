@@ -3,6 +3,9 @@ package com.mjc.common;
 import com.google.code.kaptcha.text.TextProducer;
 import java.util.Random;
 
+/**
+ * 自定义算术文本生成器
+ */
 public class KaptchaTextCreator implements TextProducer {
 
     @Override
