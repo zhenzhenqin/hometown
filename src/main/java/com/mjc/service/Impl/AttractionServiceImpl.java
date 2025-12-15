@@ -13,6 +13,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.mjc.utils.RedisConstants.ATTRACTION_QUERY_KEY;
@@ -89,7 +90,23 @@ public class AttractionServiceImpl implements AttractionService {
      */
     @Override
     public Attraction getById(Integer id) {
-        return attractionMapper.getById(id);
+        //设置单个缓存key
+        String keyId = key + id;
+
+        //先根据缓存查询
+        String attraction = stringRedisTemplate.opsForValue().get(keyId);
+
+        if (attraction != null) {
+            return JSONUtil.toBean(attraction, Attraction.class);
+        }
+
+        //缓存未命中查询数据库
+        Attraction dbattraction = attractionMapper.getById(id);
+
+        //重构缓存
+        stringRedisTemplate.opsForValue().set(keyId, JSONUtil.toJsonStr(dbattraction), Duration.ofMinutes(30));
+
+        return dbattraction;
     }
 
     /**
@@ -98,8 +115,16 @@ public class AttractionServiceImpl implements AttractionService {
      */
     @Override
     public void updateAttraction(Attraction attraction) {
+        //修改的景点的idkey
+        String keyId = key + attraction.getId();
+
         attraction.setUpdateTime(LocalDateTime.now());
+
         attractionMapper.updateAttraction(attraction);
+
+        //删除单个更新的景点的缓存
+        stringRedisTemplate.delete(keyId);
+
         clearAttractionCache();
     }
 
@@ -110,6 +135,15 @@ public class AttractionServiceImpl implements AttractionService {
     @Override
     public void deleteByIds(List<Integer> ids) {
         attractionMapper.deleteByIds(ids);
+
+        //批量删除缓存
+        List<String> keysToDelete = new ArrayList<>();
+        for (Integer id : ids) {
+            keysToDelete.add(key + id);
+        }
+
+        stringRedisTemplate.delete(keysToDelete);
+
         clearAttractionCache();
     }
 

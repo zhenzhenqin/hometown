@@ -1,5 +1,6 @@
 package com.mjc.service.Impl;
 
+import cn.hutool.json.JSONUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.mjc.bean.PageResult;
@@ -8,16 +9,25 @@ import com.mjc.bean.SpecialtiesQueryParam;
 import com.mjc.mapper.SpecialtiesMapper;
 import com.mjc.service.SpecialtiesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.mjc.utils.RedisConstants.SPECIALTY_QUERY_KEY;
 
 @Service
 public class SpecialtiesServiceImpl implements SpecialtiesService {
 
     @Autowired
     private SpecialtiesMapper specialtiesMapper;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+    private final static String key = SPECIALTY_QUERY_KEY;
 
     /**
      * 对特产进行条件分页查询
@@ -51,6 +61,7 @@ public class SpecialtiesServiceImpl implements SpecialtiesService {
         specialties.setCreateTime(LocalDateTime.now());
         specialties.setUpdateTime(LocalDateTime.now());
         specialtiesMapper.add(specialties);
+        clearSpecialtiesCache();
     }
 
     /**
@@ -60,7 +71,18 @@ public class SpecialtiesServiceImpl implements SpecialtiesService {
      */
     @Override
     public Specialties getById(Integer id) {
+        String keyId = key + id;
+
+        String specialtiesJson = stringRedisTemplate.opsForValue().get(keyId);
+
+        if (specialtiesJson != null){
+            return JSONUtil.toBean(specialtiesJson, Specialties.class);
+        }
+
         Specialties specialties = specialtiesMapper.getById(id);
+
+        stringRedisTemplate.opsForValue().set(keyId, JSONUtil.toJsonStr(specialties), Duration.ofMinutes(30));
+
         return specialties;
     }
 
@@ -72,6 +94,13 @@ public class SpecialtiesServiceImpl implements SpecialtiesService {
     public void update(Specialties specialties) {
         specialties.setUpdateTime(LocalDateTime.now());
         specialtiesMapper.update(specialties);
+
+        //只需要删除改动的缓存
+        String keyId = key + specialties.getId();
+
+        stringRedisTemplate.delete(keyId);
+
+        clearSpecialtiesCache();
     }
 
     /**
@@ -81,6 +110,16 @@ public class SpecialtiesServiceImpl implements SpecialtiesService {
     @Override
     public void deleteByIds(List<Integer> ids) {
         specialtiesMapper.deleteByIds(ids);
+
+        //批量删除缓存
+        List<String> keysToDelete = new ArrayList<>();
+        for (Integer id : ids) {
+            keysToDelete.add(key + id);
+        }
+
+        stringRedisTemplate.delete(keysToDelete);
+
+        clearSpecialtiesCache();
     }
 
     /**
@@ -89,7 +128,25 @@ public class SpecialtiesServiceImpl implements SpecialtiesService {
      */
     @Override
     public List<Specialties> findSpecialties() {
+
+        String specialtiesJson = stringRedisTemplate.opsForValue().get(key);
+
+        if (specialtiesJson != null) {
+            return JSONUtil.toList(specialtiesJson, Specialties.class);
+        }
+
         List<Specialties> specialtiesList = specialtiesMapper.findSpecialties();
+
+        //将数据存入缓存中
+        stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(specialtiesList), Duration.ofMinutes(30));
+
         return specialtiesList;
+    }
+
+    /**
+     * 清除特产相关缓存
+     */
+    private void clearSpecialtiesCache() {
+        stringRedisTemplate.delete(key);
     }
 }
