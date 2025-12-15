@@ -28,8 +28,8 @@ public interface AttractionMapper {
 
     /**
      * 根据id
-     * @param id
-     * @return
+     * @param id 景点id
+     * @return 景点
      */
     @Select("select * from attraction where id = #{id}")
     Attraction getById(Integer id);

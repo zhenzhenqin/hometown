@@ -1,3 +1,5 @@
+server:
+  port: 8080
 spring:
   application:
     name: hometown
@@ -10,10 +12,23 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/hometown_db
+    #url: jdbc:mysql://192.168.100.128:3306/hometown_db #虚拟机数据库
     #url: jdbc:mysql://192.168.100.128:3307/hometown_db?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai      虚拟机数据库地址 docker
     username: root
     password: 1234
     #password: 123   虚拟机数据库密码 docker
+  redis:
+    host: 192.168.100.128
+    port: 6379
+    password: 123456
+    lettuce:
+      pool:
+        max-active: 10
+        max-idle: 10
+        min-idle: 1
+        time-between-eviction-runs: 10s
+  jackson:
+    default-property-inclusion: non_null # JSON处理时忽略非空字段
 
 #配置mybatis
 mybatis:
