@@ -7,4 +7,7 @@ public class RedisConstants {
     public static final String SPECIALTY_QUERY_KEY = "cache:specialty:";
     //缓存文化key
     public static final String CULTURE_QUERY_KEY = "cache:culture:";
+
+    //验证码key
+    public static final String CAPTCHA_QUERY_KEY = "captcha_codes:";
 }
