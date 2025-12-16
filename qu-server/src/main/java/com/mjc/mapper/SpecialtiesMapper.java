@@ -1,5 +1,7 @@
 package com.mjc.mapper;
 
+import com.mjc.annotation.AutoFill;
+import com.mjc.enumeration.OperationType;
 import com.mjc.queryParam.SpecialtiesQueryParam;
 import com.mjc.entity.Specialties;
 import org.apache.ibatis.annotations.Insert;
@@ -23,6 +25,7 @@ public interface SpecialtiesMapper {
      * 添加特产
      * @param specialties
      */
+    @AutoFill(value = OperationType.INSERT)
     @Insert("insert into specialty(name, description, price, image, create_time, update_time) " +
             "values(#{name}, #{description}, #{price}, #{image}, #{createTime}, #{updateTime})")
     void add(Specialties specialties);
@@ -39,6 +42,7 @@ public interface SpecialtiesMapper {
      * 修改特产
      * @param specialties
      */
+    @AutoFill(value = OperationType.UPDATE)
     @Update("update specialty set name = #{name}, description = #{description}, price = #{price}, image = #{image}, update_time = #{updateTime} where id = #{id}")
     void update(Specialties specialties);
 

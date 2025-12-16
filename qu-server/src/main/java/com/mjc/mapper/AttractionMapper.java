@@ -1,5 +1,7 @@
 package com.mjc.mapper;
 
+import com.mjc.annotation.AutoFill;
+import com.mjc.enumeration.OperationType;
 import com.mjc.queryParam.AttractionQueryParam;
 import com.mjc.entity.Attraction;
 import org.apache.ibatis.annotations.Insert;
@@ -23,6 +25,7 @@ public interface AttractionMapper {
      * 添加景点
      * @param attraction
      */
+    @AutoFill(value = OperationType.INSERT)
     @Insert("insert into attraction(name, location, description,score, create_time, update_time) values(#{name}, #{location}, #{description}, #{score}, #{createTime}, #{updateTime})")
     void addAttraction(Attraction attraction);
 
@@ -38,6 +41,7 @@ public interface AttractionMapper {
      * 修改景点
      * @param attraction
      */
+    @AutoFill(value = OperationType.UPDATE)
     @Update("update attraction set name = #{name}, location = #{location}, description = #{description}, score = #{score}, update_time = #{updateTime} where id = #{id}")
     void updateAttraction(Attraction attraction);
 

@@ -1,6 +1,8 @@
 package com.mjc.mapper;
 
+import com.mjc.annotation.AutoFill;
 import com.mjc.entity.Admin;
+import com.mjc.enumeration.OperationType;
 import com.mjc.queryParam.AdminQueryParam;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -31,6 +33,7 @@ public interface AdminMapper {
      * 更新管理员
      * @param admin
      */
+    @AutoFill(value = OperationType.UPDATE)
     void updateAdmin(Admin admin);
 
     /**
@@ -58,6 +61,7 @@ public interface AdminMapper {
      * 新增员工
      * @param admin
      */
+    @AutoFill(value = OperationType.INSERT)
     @Insert("INSERT INTO admin (username, password, real_name, status, email, phone, introduction, create_time, update_time) " +
             "VALUES (#{username}, #{password}, #{realName}, #{status}, #{email}, #{phone}, #{introduction}, #{createTime}, #{updateTime})")
     void save(Admin admin);

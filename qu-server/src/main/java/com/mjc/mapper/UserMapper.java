@@ -1,6 +1,8 @@
 package com.mjc.mapper;
 
+import com.mjc.annotation.AutoFill;
 import com.mjc.entity.User;
+import com.mjc.enumeration.OperationType;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -28,6 +30,7 @@ public interface UserMapper {
      * 更新用户
      * @param user
      */
+    @AutoFill(value = OperationType.UPDATE)
     void updateUser(User user);
 
     /**

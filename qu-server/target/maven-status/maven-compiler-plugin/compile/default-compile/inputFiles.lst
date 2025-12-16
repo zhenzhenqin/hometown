@@ -1,6 +1,8 @@
 D:\Code\Hometown\hometown\qu-server\src\main\java\com\mjc\service\UserService.java
 D:\Code\Hometown\hometown\qu-server\src\main\java\com\mjc\mapper\UserMapper.java
+D:\Code\Hometown\hometown\qu-server\src\main\java\com\mjc\annotation\AutoFill.java
 D:\Code\Hometown\hometown\qu-server\src\main\java\com\mjc\service\SpecialtiesService.java
+D:\Code\Hometown\hometown\qu-server\src\main\java\com\mjc\aspect\AutoFillAspect.java
 D:\Code\Hometown\hometown\qu-server\src\main\java\com\mjc\mapper\SpecialtiesMapper.java
 D:\Code\Hometown\hometown\qu-server\src\main\java\com\mjc\service\Impl\SpecialtiesServiceImpl.java
 D:\Code\Hometown\hometown\qu-server\src\main\java\com\mjc\mapper\AttractionMapper.java

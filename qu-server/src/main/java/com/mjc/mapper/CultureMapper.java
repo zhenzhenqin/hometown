@@ -1,5 +1,7 @@
 package com.mjc.mapper;
 
+import com.mjc.annotation.AutoFill;
+import com.mjc.enumeration.OperationType;
 import com.mjc.queryParam.CultureQueryParam;
 import com.mjc.entity.Culture;
 import org.apache.ibatis.annotations.Insert;
@@ -23,6 +25,7 @@ public interface CultureMapper {
      * 新增文化
      * @param culture
      */
+    @AutoFill(value = OperationType.INSERT)
     @Insert("insert into culture(title,content,image,create_time,update_time) values(#{title},#{content},#{image},#{createTime},#{updateTime})")
     void insertCulture(Culture culture);
 
@@ -38,6 +41,7 @@ public interface CultureMapper {
      * 修改文化
      * @param culture
      */
+    @AutoFill(value = OperationType.UPDATE)
     @Update("update culture set title=#{title},content=#{content},image=#{image},update_time=#{updateTime} where id=#{id}")
     void updateCulture(Culture culture);
 
