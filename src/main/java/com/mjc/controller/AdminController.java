@@ -3,6 +3,7 @@ package com.mjc.controller;
 import com.mjc.constant.JwtClaimsConstant;
 import com.mjc.entity.Admin;
 import com.mjc.entity.Result;
+import com.mjc.entity.User;
 import com.mjc.entity.dto.AdminDTO;
 import com.mjc.entity.vo.AdminVO;
 import com.mjc.properties.JwtProperties;
@@ -12,12 +13,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -58,7 +57,59 @@ public class AdminController {
                 .token(token)
                 .build();
 
+        //TODO jwt拦截校验
         return Result.success(adminVo);
+    }
+
+    /**
+     * 查询管理员
+     * @return
+     */
+    @GetMapping()
+    @Operation(summary = "查询管理员")
+    public Result<Admin> getAdmin(){
+        log.info("查询管理员");
+        Admin admin = adminService.getAdmin();
+        return Result.success(admin);
+    }
+
+
+    /**
+     * 根据id回显管理员信息
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    @Operation(summary = "根据id回显管理员信息")
+    public Result<Admin> getUserById(@PathVariable Integer id){
+        log.info("根据id回显管理员户信息: {}", id);
+        Admin admin = adminService.getAdminById(id);
+        return Result.success(admin);
+    }
+
+    /**
+     * 更新管理员
+     * @param admin
+     * @return
+     */
+    @PutMapping()
+    @Operation(summary = "更新管理员")
+    public Result updateUser(@RequestBody Admin admin){
+        log.info("更新管理员: {}", admin);
+        adminService.updateAdmin(admin);
+        return Result.success();
+    }
+
+    /**
+     * 查询管理员
+     * @return
+     */
+    @GetMapping("/all")
+    @Operation(summary = "查询管理员")
+    public Result<List<Admin>> findUser(){
+        log.info("查询用户");
+        List<Admin> adminList = adminService.findAdminList();
+        return Result.success(adminList);
     }
 
 }

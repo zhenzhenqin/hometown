@@ -2,6 +2,8 @@ package com.mjc.service;
 
 import com.mjc.entity.User;
 
+import java.util.List;
+
 public interface UserService {
 
     /**
@@ -27,5 +29,5 @@ public interface UserService {
      * 查询所有用户
      * @return
      */
-    User findUser();
+    List<User> findUser();
 }

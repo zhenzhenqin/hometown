@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @Tag(name = "用户相关接口")
 @RestController
@@ -62,9 +64,9 @@ public class UserController {
      */
     @GetMapping("/all")
     @Operation(summary = "查询用户")
-    public Result findUser(){
+    public Result<List<User>> findUser(){
         log.info("查询用户");
-        User user = userService.findUser();
-        return Result.success(user);
+        List<User> userList = userService.findUser();
+        return Result.success(userList);
     }
 }
