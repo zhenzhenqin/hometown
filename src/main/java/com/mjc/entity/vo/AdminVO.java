@@ -1,7 +1,9 @@
 package com.mjc.entity.vo;
 
+import lombok.Builder;
 import lombok.Data;
 
+@Builder
 @Data
 public class AdminVO {
     private Integer id; // 主键

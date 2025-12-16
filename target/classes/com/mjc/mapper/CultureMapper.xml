@@ -11,7 +11,7 @@
     </delete>
 
     <!--按照标题条件查询文化列表-->
-    <select id="getCultureLists"  resultType="com.mjc.bean.Culture">
+    <select id="getCultureLists"  resultType="com.mjc.entity.Culture">
         select * from culture
         <where>
             <if test="title != null and title != ''">
