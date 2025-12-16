@@ -2,6 +2,7 @@ package com.mjc.service;
 
 import com.mjc.Result.PageResult;
 import com.mjc.dto.UserLoginDTO;
+import com.mjc.dto.UserPasswordEditDTO;
 import com.mjc.dto.UserRegisterDTO;
 import com.mjc.entity.User;
 import com.mjc.queryParam.UserQueryParam;
@@ -62,4 +63,10 @@ public interface UserService {
      * @param id
      */
     void startOrStopUser(Integer status, Long id);
+
+    /**
+     * 用户修改密码
+     * @param userPasswordEditDTO
+     */
+    void userEditPassword(UserPasswordEditDTO userPasswordEditDTO);
 }

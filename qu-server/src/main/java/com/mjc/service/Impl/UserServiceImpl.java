@@ -6,7 +6,9 @@ import com.mjc.Result.PageResult;
 import com.mjc.contant.MessageConstant;
 import com.mjc.contant.StatusConstant;
 import com.mjc.dto.UserLoginDTO;
+import com.mjc.dto.UserPasswordEditDTO;
 import com.mjc.dto.UserRegisterDTO;
+import com.mjc.entity.Admin;
 import com.mjc.entity.User;
 import com.mjc.exception.*;
 import com.mjc.mapper.UserMapper;
@@ -221,6 +223,35 @@ public class UserServiceImpl implements UserService {
                 .status(status)
                 .updateTime(LocalDateTime.now())
                 .build();
+
+        userMapper.updateUser(user);
+    }
+
+    /**
+     * 修改用户密码
+     * @param userPasswordEditDTO
+     */
+    @Override
+    public void userEditPassword(UserPasswordEditDTO userPasswordEditDTO) {
+        //1. 根据id查询数据库是否有
+        User user = userMapper.getUserById(Math.toIntExact(userPasswordEditDTO.getUserId()));
+
+        if (user == null) {
+            throw new AccountNotFoundException(MessageConstant.ACCOUNT_NOT_FOUND);
+        }
+
+        //2. 将输入的密码进行比对
+        String oldPassword = userPasswordEditDTO.getOldPassword();
+        //旧密码加密
+        String md5OldPassword = DigestUtils.md5DigestAsHex(oldPassword.getBytes());
+
+        //比对查询
+        if (!md5OldPassword.equals(user.getPassword())) {
+            throw new PasswordErrorException(MessageConstant.PASSWORD_ERROR);
+        }
+
+        user.setPassword(DigestUtils.md5DigestAsHex(userPasswordEditDTO.getNewPassword().getBytes()));
+        user.setUpdateTime(LocalDateTime.now());
 
         userMapper.updateUser(user);
     }

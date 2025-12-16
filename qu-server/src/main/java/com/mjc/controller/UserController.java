@@ -3,6 +3,7 @@ package com.mjc.controller;
 import com.mjc.Result.PageResult;
 import com.mjc.Result.Result;
 import com.mjc.dto.UserLoginDTO;
+import com.mjc.dto.UserPasswordEditDTO;
 import com.mjc.dto.UserRegisterDTO;
 import com.mjc.entity.User;
 import com.mjc.queryParam.UserQueryParam;
@@ -66,6 +67,21 @@ public class UserController {
                 .build();
 
         return Result.success(userLoginVO);
+    }
+
+    /**
+     * 用户修改密码功能
+     * @param userPasswordEditDTO
+     * @return
+     */
+    @PostMapping("/editPassword")
+    @Operation(summary = "用户修改密码")
+    public Result userEditPassword(@RequestBody UserPasswordEditDTO userPasswordEditDTO){
+        log.info("用户修改密码: {}", userPasswordEditDTO);
+
+        userService.userEditPassword(userPasswordEditDTO);
+
+        return Result.success();
     }
 
     /**
