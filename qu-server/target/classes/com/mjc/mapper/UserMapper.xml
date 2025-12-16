@@ -18,6 +18,22 @@
         </set>
         where id = #{id}
     </update>
+    <!--条件分页查询-->
+    <select id="queryAllUser" resultType="com.mjc.entity.User">
+        select * from user
+        <where>
+            <if test="username != null and username != ''">
+                and username like concat('%', #{username}, '%')
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="phone != null">
+                and phone = #{phone}
+            </if>
+        </where>
+        order by update_time
+    </select>
 
 </mapper>
 

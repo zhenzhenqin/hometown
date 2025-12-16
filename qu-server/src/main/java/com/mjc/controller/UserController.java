@@ -1,8 +1,11 @@
 package com.mjc.controller;
 
+import com.mjc.Result.PageResult;
 import com.mjc.Result.Result;
 import com.mjc.dto.UserLoginDTO;
+import com.mjc.dto.UserRegisterDTO;
 import com.mjc.entity.User;
+import com.mjc.queryParam.UserQueryParam;
 import com.mjc.service.UserService;
 import com.mjc.vo.UserLoginVO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,6 +44,41 @@ public class UserController {
                 .build();
 
         return Result.success(userLoginVO);
+    }
+
+    /**
+     * 用户注册接口
+     * @param userRegisterDTO
+     * @return
+     */
+    @Operation(summary = "用户注册接口")
+    @PostMapping("/register")
+    public Result<UserLoginVO> register(@RequestBody UserRegisterDTO userRegisterDTO){
+        log.info("用户注册信息为:{}", userRegisterDTO);
+
+        User user = userService.userRegister(userRegisterDTO);
+
+        //回传注册信息用于登录
+        UserLoginVO userLoginVO = UserLoginVO.builder()
+                .id(String.valueOf(user.getId()))
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .build();
+
+        return Result.success(userLoginVO);
+    }
+
+    /**
+     * 条件分页查询用户
+     * @param userQueryParam
+     * @return
+     */
+    @Operation(summary = "条件分页查询用户")
+    @GetMapping("/query")
+    public Result<PageResult> queryAllUser(UserQueryParam userQueryParam){
+        log.info("分页查询用户参数:{}", userQueryParam);
+        PageResult result = userService.queryAllUser(userQueryParam);
+        return Result.success(result);
     }
 
     /**

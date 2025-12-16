@@ -1,7 +1,10 @@
 package com.mjc.service;
 
+import com.mjc.Result.PageResult;
 import com.mjc.dto.UserLoginDTO;
+import com.mjc.dto.UserRegisterDTO;
 import com.mjc.entity.User;
+import com.mjc.queryParam.UserQueryParam;
 
 import java.util.List;
 
@@ -38,4 +41,18 @@ public interface UserService {
      * @return
      */
     User userLogin(UserLoginDTO userLoginDTO);
+
+    /**
+     * 用户注册接口
+     * @param userRegisterDTO
+     * @return
+     */
+    User userRegister(UserRegisterDTO userRegisterDTO);
+
+    /**
+     * 条件分页查询所有用户
+     * @param userQueryParam
+     * @return
+     */
+    PageResult queryAllUser(UserQueryParam userQueryParam);
 }

@@ -3,6 +3,8 @@ package com.mjc.mapper;
 import com.mjc.annotation.AutoFill;
 import com.mjc.entity.User;
 import com.mjc.enumeration.OperationType;
+import com.mjc.queryParam.UserQueryParam;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -47,4 +49,19 @@ public interface UserMapper {
      */
     @Select("select  * from user where username = #{username}")
     User getUserByUsername(String username);
+
+    /**
+     * 条件分页查询
+     * @param userQueryParam
+     * @return
+     */
+    List<User> queryAllUser(UserQueryParam userQueryParam);
+
+    /**
+     * 用户注册功能
+     * @param user
+     */
+    @AutoFill(OperationType.INSERT)
+    @Insert("insert into user (username, password, phone, status) values (#{username}, #{password}, #{phone}, #{status})")
+    void registerUser(User user);
 }
