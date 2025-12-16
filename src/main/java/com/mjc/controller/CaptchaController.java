@@ -1,6 +1,7 @@
 package com.mjc.controller;
 
 import com.google.code.kaptcha.Producer;
+import com.mjc.entity.Result;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -34,7 +35,7 @@ public class CaptchaController {
     private StringRedisTemplate redisTemplate;
 
     @GetMapping("/captchaImage")
-    public Map<String, Object> getCode() throws IOException {
+    public Result<Map<String, Object>> getCode() throws IOException {
         Map<String, Object> ajax = new HashMap<>();
         
         // 1. 生成UUID，作为Redis的key
@@ -61,6 +62,6 @@ public class CaptchaController {
         ajax.put("uuid", uuid);
         ajax.put("img", Base64.getEncoder().encodeToString(os.toByteArray()));
         
-        return ajax;
+        return Result.success(ajax);
     }
 }
