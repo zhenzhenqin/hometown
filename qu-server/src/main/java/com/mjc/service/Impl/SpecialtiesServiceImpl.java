@@ -4,7 +4,7 @@ import com.mjc.Result.PageResult;
 import cn.hutool.json.JSONUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.mjc.dto.SpecialtiesQueryParam;
+import com.mjc.queryParam.SpecialtiesQueryParam;
 import com.mjc.entity.Specialties;
 import com.mjc.mapper.SpecialtiesMapper;
 import com.mjc.service.SpecialtiesService;

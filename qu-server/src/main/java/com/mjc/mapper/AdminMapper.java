@@ -1,6 +1,7 @@
 package com.mjc.mapper;
 
 import com.mjc.entity.Admin;
+import com.mjc.queryParam.AdminQueryParam;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -39,10 +40,16 @@ public interface AdminMapper {
     List<Admin> findAllAdmin();
 
     /**
-     * 根据ThreadLocal存储id获取用户欣喜
      * @param id
      * @return
      */
     @Select("select * from admin where id = #{id}")
     Admin getAdmin(Long id);
+
+    /**
+     * 查询所有管理员信息
+     * @param adminQueryParam
+     * @return
+     */
+    List<Admin> queryAllAdmin(AdminQueryParam adminQueryParam);
 }

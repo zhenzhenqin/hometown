@@ -1,10 +1,14 @@
 package com.mjc.service.Impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.mjc.Result.PageResult;
 import com.mjc.contant.MessageConstant;
 import com.mjc.contant.StatusConstant;
-import com.mjc.dto.AdminDTO;
+import com.mjc.dto.AdminLoginDTO;
 import com.mjc.entity.Admin;
 import com.mjc.mapper.AdminMapper;
+import com.mjc.queryParam.AdminQueryParam;
 import com.mjc.service.AdminService;
 import com.mjc.context.BaseContext;
 import com.mjc.exception.AccountLockedException;
@@ -26,13 +30,13 @@ public class AdminServiceImpl implements AdminService {
 
     /**
      * 管理员登录
-     * @param adminDTO
+     * @param adminLoginDTO
      * @return
      */
     @Override
-    public Admin login(AdminDTO adminDTO) {
-        String username = adminDTO.getUsername();
-        String oldPassword = adminDTO.getPassword();
+    public Admin login(AdminLoginDTO adminLoginDTO) {
+        String username = adminLoginDTO.getUsername();
+        String oldPassword = adminLoginDTO.getPassword();
 
 
         //根据账号密码去数据库查询
@@ -104,5 +108,27 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<Admin> findAdminList() {
         return adminMapper.findAllAdmin();
+    }
+
+    /**
+     * 分页查询所有管理员
+     * @param adminQueryParam
+     * @return
+     */
+    @Override
+    public PageResult queryAllAdmin(AdminQueryParam adminQueryParam) {
+        if(adminQueryParam.getPage() == null){
+            adminQueryParam.setPage(1);
+        }
+        if(adminQueryParam.getPageSize() == null){
+            adminQueryParam.setPageSize(10);
+        }
+
+        PageHelper.startPage(adminQueryParam.getPage(), adminQueryParam.getPageSize());
+
+        List<Admin> list = adminMapper.queryAllAdmin(adminQueryParam);
+        Page<Admin> p = (Page<Admin>) list;
+
+        return new PageResult(p.getTotal(), p.getResult());
     }
 }

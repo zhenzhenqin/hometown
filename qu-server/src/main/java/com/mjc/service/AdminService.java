@@ -1,8 +1,9 @@
 package com.mjc.service;
 
-import com.mjc.dto.AdminDTO;
+import com.mjc.Result.PageResult;
+import com.mjc.dto.AdminLoginDTO;
 import com.mjc.entity.Admin;
-import org.springframework.stereotype.Service;
+import com.mjc.queryParam.AdminQueryParam;
 
 import java.util.List;
 
@@ -10,10 +11,10 @@ import java.util.List;
 public interface AdminService {
     /**
      * 管理员登录
-     * @param adminDTO
+     * @param adminLoginDTO
      * @return
      */
-    Admin login(AdminDTO adminDTO);
+    Admin login(AdminLoginDTO adminLoginDTO);
 
     /**
      * 查询管理员
@@ -39,4 +40,11 @@ public interface AdminService {
      * @return
      */
     List<Admin> findAdminList();
+
+    /**
+     * 分页查询所有管理员
+     * @param adminQueryParam
+     * @return
+     */
+    PageResult queryAllAdmin(AdminQueryParam adminQueryParam);
 }

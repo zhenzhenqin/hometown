@@ -2,7 +2,7 @@ package com.mjc.controller;
 
 import com.mjc.Result.Result;
 import com.mjc.Result.PageResult;
-import com.mjc.dto.CultureQueryParam;
+import com.mjc.queryParam.CultureQueryParam;
 import com.mjc.entity.Culture;
 import com.mjc.service.CultureService;
 import io.swagger.v3.oas.annotations.Operation;

@@ -1,7 +1,7 @@
 package com.mjc.service;
 
 import com.mjc.Result.PageResult;
-import com.mjc.dto.AttractionQueryParam;
+import com.mjc.queryParam.AttractionQueryParam;
 import com.mjc.entity.Attraction;
 
 import java.util.List;

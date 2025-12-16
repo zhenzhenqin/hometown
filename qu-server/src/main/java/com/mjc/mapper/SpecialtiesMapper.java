@@ -1,6 +1,6 @@
 package com.mjc.mapper;
 
-import com.mjc.dto.SpecialtiesQueryParam;
+import com.mjc.queryParam.SpecialtiesQueryParam;
 import com.mjc.entity.Specialties;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;

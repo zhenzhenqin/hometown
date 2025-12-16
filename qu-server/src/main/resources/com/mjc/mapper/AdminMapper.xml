@@ -18,6 +18,15 @@
         </set>
         where id = #{id}
     </update>
+    <!--查询所有员工信息-->
+    <select id="queryAllAdmin" resultType="com.mjc.entity.Admin">
+        select * from admin
+        <where>
+            <if test="username != null">
+                and username like concat('%', #{username}, '%'),
+            </if>
+        </where>
+    </select>
 
 </mapper>
 

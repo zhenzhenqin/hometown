@@ -1,4 +1,4 @@
-package com.mjc.dto;
+package com.mjc.queryParam;
 
 import lombok.Data;
 

@@ -4,7 +4,7 @@ import com.mjc.Result.PageResult;
 import cn.hutool.json.JSONUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.mjc.dto.AttractionQueryParam;
+import com.mjc.queryParam.AttractionQueryParam;
 import com.mjc.entity.Attraction;
 import com.mjc.mapper.AttractionMapper;
 import com.mjc.service.AttractionService;

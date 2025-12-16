@@ -1,10 +1,13 @@
 package com.mjc.controller;
 
+import com.mjc.Result.PageResult;
 import com.mjc.Result.Result;
 import com.mjc.contant.JwtClaimsConstant;
 import com.mjc.dto.AdminDTO;
+import com.mjc.dto.AdminLoginDTO;
 import com.mjc.entity.Admin;
 import com.mjc.properties.JwtProperties;
+import com.mjc.queryParam.AdminQueryParam;
 import com.mjc.service.AdminService;
 import com.mjc.vo.AdminVO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,15 +37,15 @@ public class AdminController {
 
     /**
      * 登录相关接口
-     * @param adminDTO 员工dto
+     * @param adminLoginDTO 员工dto
      * @return 管理员vo
      */
     @PostMapping("/login")
     @Operation(summary = "管理员登陆")
-    public Result<AdminVO> login(@RequestBody AdminDTO adminDTO){
-        log.info("登录管理员信息为:{}", adminDTO);
+    public Result<AdminVO> login(@RequestBody AdminLoginDTO adminLoginDTO){
+        log.info("登录管理员信息为:{}", adminLoginDTO);
 
-        Admin admin = adminService.login(adminDTO);
+        Admin admin = adminService.login(adminLoginDTO);
 
         //登录成功后 生成jwt令牌 存入管理员的id
         Map<String, Object> claims = new HashMap<>();
@@ -71,6 +74,17 @@ public class AdminController {
         return Result.success(admin);
     }
 
+    /**
+     * 分页查询用户
+     * @param adminQueryParam
+     * @return
+     */
+    @GetMapping
+    public Result query(AdminQueryParam adminQueryParam){
+        log.info("分页查询参数:{}",adminQueryParam);
+        PageResult result = adminService.queryAllAdmin(adminQueryParam);
+        return Result.success(result);
+    }
 
     /**
      * 根据id回显管理员信息

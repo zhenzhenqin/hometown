@@ -2,7 +2,7 @@ package com.mjc.controller;
 
 import com.mjc.Result.Result;
 import com.mjc.Result.PageResult;
-import com.mjc.dto.AttractionQueryParam;
+import com.mjc.queryParam.AttractionQueryParam;
 import com.mjc.entity.Attraction;
 import com.mjc.service.AttractionService;
 import io.swagger.v3.oas.annotations.Operation;

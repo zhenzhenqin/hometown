@@ -1,7 +1,7 @@
 package com.mjc.service;
 
 import com.mjc.Result.PageResult;
-import com.mjc.dto.SpecialtiesQueryParam;
+import com.mjc.queryParam.SpecialtiesQueryParam;
 import com.mjc.entity.Specialties;
 
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.mjc.service;
 
 import com.mjc.Result.PageResult;
-import com.mjc.dto.CultureQueryParam;
+import com.mjc.queryParam.CultureQueryParam;
 import com.mjc.entity.Culture;
 
 import java.util.List;

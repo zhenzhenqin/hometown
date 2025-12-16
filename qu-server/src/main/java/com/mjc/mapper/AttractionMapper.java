@@ -1,6 +1,6 @@
 package com.mjc.mapper;
 
-import com.mjc.dto.AttractionQueryParam;
+import com.mjc.queryParam.AttractionQueryParam;
 import com.mjc.entity.Attraction;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;

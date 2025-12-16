@@ -1,6 +1,6 @@
 package com.mjc.mapper;
 
-import com.mjc.dto.CultureQueryParam;
+import com.mjc.queryParam.CultureQueryParam;
 import com.mjc.entity.Culture;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
