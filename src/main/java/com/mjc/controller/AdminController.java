@@ -57,7 +57,6 @@ public class AdminController {
                 .token(token)
                 .build();
 
-        //TODO jwt拦截校验
         return Result.success(adminVo);
     }
 
@@ -111,5 +110,4 @@ public class AdminController {
         List<Admin> adminList = adminService.findAdminList();
         return Result.success(adminList);
     }
-
 }
