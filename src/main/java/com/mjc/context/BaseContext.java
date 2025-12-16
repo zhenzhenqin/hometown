@@ -1,4 +1,4 @@
-package com.mjc.Context;
+package com.mjc.context;
 
 // 基于ThreadLocal封装的线程变量 用于存储当前登录的用户信息
 public class BaseContext {

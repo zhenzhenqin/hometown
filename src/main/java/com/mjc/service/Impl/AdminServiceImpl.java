@@ -1,6 +1,6 @@
 package com.mjc.service.Impl;
 
-import com.mjc.Context.BaseContext;
+import com.mjc.context.BaseContext;
 import com.mjc.constant.MessageConstant;
 import com.mjc.constant.StatusConstant;
 import com.mjc.entity.Admin;
@@ -59,7 +59,7 @@ public class AdminServiceImpl implements AdminService {
             throw new AccountLockedException(MessageConstant.ACCOUNT_LOCKED);
         }
 
-        BaseContext.setCurrentId(admin.getId().longValue());
+        //BaseContext.setCurrentId(admin.getId().longValue());
 
         //fanhuui
         return admin;
