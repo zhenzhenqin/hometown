@@ -1,6 +1,7 @@
 package com.mjc.service;
 
 import com.mjc.Result.PageResult;
+import com.mjc.dto.AdminDTO;
 import com.mjc.dto.AdminLoginDTO;
 import com.mjc.entity.Admin;
 import com.mjc.queryParam.AdminQueryParam;
@@ -27,7 +28,7 @@ public interface AdminService {
      * @param id
      * @return
      */
-    Admin getAdminById(Integer id);
+    AdminDTO getAdminById(Integer id);
 
     /**
      * 更新管理员
@@ -47,4 +48,11 @@ public interface AdminService {
      * @return
      */
     PageResult queryAllAdmin(AdminQueryParam adminQueryParam);
+
+    /**
+     * 启用禁用管理员账号
+     * @param status
+     * @param id
+     */
+    void startOrStop(Integer status, Long id);
 }

@@ -79,8 +79,9 @@ public class AdminController {
      * @param adminQueryParam
      * @return
      */
-    @GetMapping
-    public Result query(AdminQueryParam adminQueryParam){
+    @GetMapping("/query")
+    @Operation(summary = "条件分页查询管理员")
+    public Result<PageResult> query(AdminQueryParam adminQueryParam){
         log.info("分页查询参数:{}",adminQueryParam);
         PageResult result = adminService.queryAllAdmin(adminQueryParam);
         return Result.success(result);
@@ -93,10 +94,24 @@ public class AdminController {
      */
     @GetMapping("/{id}")
     @Operation(summary = "根据id回显管理员信息")
-    public Result<Admin> getUserById(@PathVariable Integer id){
+    public Result<AdminDTO> getUserById(@PathVariable Integer id){
         log.info("根据id回显管理员户信息: {}", id);
-        Admin admin = adminService.getAdminById(id);
-        return Result.success(admin);
+        AdminDTO adminDTO = adminService.getAdminById(id);
+        return Result.success(adminDTO);
+    }
+
+    /**
+     * 启用禁用管理员账号
+     * @param status 管理员账号状态
+     * @param id 管理员id
+     * @return
+     */
+    @Operation(summary = "启用禁用管理员账号")
+    @PostMapping("/status/{status}")
+    public Result startOrStopAdmin(@PathVariable Integer status, Long id){
+        log.info("启用管理员账号的参数: {}, {}", status, id);
+        adminService.startOrStop(status, id);
+        return Result.success();
     }
 
     /**

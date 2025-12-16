@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.mjc.Result.PageResult;
 import com.mjc.contant.MessageConstant;
 import com.mjc.contant.StatusConstant;
+import com.mjc.dto.AdminDTO;
 import com.mjc.dto.AdminLoginDTO;
 import com.mjc.entity.Admin;
 import com.mjc.mapper.AdminMapper;
@@ -15,6 +16,7 @@ import com.mjc.exception.AccountLockedException;
 import com.mjc.exception.AccountNotFoundException;
 import com.mjc.exception.PasswordErrorException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -86,9 +88,14 @@ public class AdminServiceImpl implements AdminService {
      * @return
      */
     @Override
-    public Admin getAdminById(Integer id) {
+    public AdminDTO getAdminById(Integer id) {
         Admin admin = adminMapper.getById(id);
-        return admin;
+
+        //属性拷贝
+        AdminDTO adminDTO = new AdminDTO();
+        BeanUtils.copyProperties(admin, adminDTO);
+
+        return adminDTO;
     }
 
     /**
@@ -130,5 +137,20 @@ public class AdminServiceImpl implements AdminService {
         Page<Admin> p = (Page<Admin>) list;
 
         return new PageResult(p.getTotal(), p.getResult());
+    }
+
+    /**
+     * 启用禁用管理员账号
+     * @param status
+     * @param id
+     */
+    @Override
+    public void startOrStop(Integer status, Long id) {
+        Admin admin = Admin.builder()
+                .id(id.intValue())
+                .status(status)
+                .build();
+
+        adminMapper.updateAdmin(admin);
     }
 }
