@@ -10,7 +10,7 @@
         <set>
             <if test="username != null and username !=''">username = #{username},</if>
             <if test="realName != null and realName !=''">real_name = #{realName},</if>
-            <if test="status != null and status !=''">status = #{status},</if>
+            <if test="status != null">status = #{status},</if>
             <if test="email != null">email = #{email},</if>
             <if test="password != null">password = #{password},</if>
             <if test="phone != null and phone !=''">phone = #{phone},</if>
@@ -24,7 +24,7 @@
         select * from admin
         <where>
             <if test="username != null">
-                and username like concat('%', #{username}, '%'),
+                and username like concat('%', #{username}, '%')
             </if>
         </where>
     </select>

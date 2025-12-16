@@ -1,6 +1,7 @@
 package com.mjc.handler;
 
 import com.mjc.Result.Result;
+import com.mjc.exception.AccountLockedException;
 import com.mjc.exception.AccountNotFoundException;
 import com.mjc.exception.PasswordErrorException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,6 +23,12 @@ public class GlobalExceptionHandler {
     //捕获密码错误异常
     @ExceptionHandler(PasswordErrorException.class)
     public Result<?> handlePasswordErrorException(PasswordErrorException e){
+        return Result.error(e.getMessage());
+    }
+
+    //捕获账号被锁定无法登录的异常
+    @ExceptionHandler(AccountLockedException.class)
+    public Result<?> handleAccountLockedException(AccountLockedException e){
         return Result.error(e.getMessage());
     }
 

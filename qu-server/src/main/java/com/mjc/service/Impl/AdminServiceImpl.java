@@ -149,9 +149,11 @@ public class AdminServiceImpl implements AdminService {
      */
     @Override
     public void startOrStop(Integer status, Long id) {
+
         Admin admin = Admin.builder()
                 .id(id.intValue())
                 .status(status)
+                .updateTime(LocalDateTime.now())
                 .build();
 
         adminMapper.updateAdmin(admin);
