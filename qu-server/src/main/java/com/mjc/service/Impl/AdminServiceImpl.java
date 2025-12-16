@@ -174,11 +174,11 @@ public class AdminServiceImpl implements AdminService {
         String md5OldPassword = DigestUtils.md5DigestAsHex(oldPassword.getBytes());
 
         //比对查询
-        if (md5OldPassword.equals(admin.getPassword())) {
+        if (!md5OldPassword.equals(admin.getPassword())) {
             throw new PasswordErrorException(MessageConstant.PASSWORD_ERROR);
         }
 
-        admin.setPassword(adminPasswordEditDTO.getNewPassword());
+        admin.setPassword(DigestUtils.md5DigestAsHex(adminPasswordEditDTO.getNewPassword().getBytes()));
         admin.setUpdateTime(LocalDateTime.now());
 
         adminMapper.updateAdmin(admin);

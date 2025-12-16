@@ -2,6 +2,7 @@ package com.mjc.handler;
 
 import com.mjc.Result.Result;
 import com.mjc.exception.AccountNotFoundException;
+import com.mjc.exception.PasswordErrorException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -15,6 +16,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccountNotFoundException.class)
     public Result<?> handleAccountNotFound(AccountNotFoundException e) {
 
+        return Result.error(e.getMessage());
+    }
+
+    //捕获密码错误异常
+    @ExceptionHandler(PasswordErrorException.class)
+    public Result<?> handlePasswordErrorException(PasswordErrorException e){
         return Result.error(e.getMessage());
     }
 
