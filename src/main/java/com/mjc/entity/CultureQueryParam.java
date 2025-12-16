@@ -1,4 +1,4 @@
-package com.mjc.bean;
+package com.mjc.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

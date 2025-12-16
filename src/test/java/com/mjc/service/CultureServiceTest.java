@@ -1,8 +1,8 @@
 package com.mjc.service;
 
-import com.mjc.bean.Culture;
-import com.mjc.bean.CultureQueryParam;
-import com.mjc.bean.PageResult;
+import com.mjc.entity.Culture;
+import com.mjc.entity.CultureQueryParam;
+import com.mjc.entity.PageResult;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

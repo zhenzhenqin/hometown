@@ -1,10 +1,10 @@
 package com.mjc.controller;
 
 
-import com.mjc.bean.Culture;
-import com.mjc.bean.CultureQueryParam;
-import com.mjc.bean.PageResult;
-import com.mjc.bean.Result;
+import com.mjc.entity.Culture;
+import com.mjc.entity.CultureQueryParam;
+import com.mjc.entity.PageResult;
+import com.mjc.entity.Result;
 import com.mjc.service.CultureService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

@@ -1,6 +1,6 @@
 package com.mjc.service.Impl;
 
-import com.mjc.bean.User;
+import com.mjc.entity.User;
 import com.mjc.mapper.UserMapper;
 import com.mjc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

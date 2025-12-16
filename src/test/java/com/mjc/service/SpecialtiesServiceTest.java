@@ -1,8 +1,8 @@
 package com.mjc.service;
 
-import com.mjc.bean.PageResult;
-import com.mjc.bean.Specialties;
-import com.mjc.bean.SpecialtiesQueryParam;
+import com.mjc.entity.PageResult;
+import com.mjc.entity.Specialties;
+import com.mjc.entity.SpecialtiesQueryParam;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

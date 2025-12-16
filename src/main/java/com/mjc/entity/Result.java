@@ -1,4 +1,4 @@
-package com.mjc.bean;
+package com.mjc.entity;
 
 import lombok.Data;
 
@@ -6,23 +6,23 @@ import lombok.Data;
  * author mjc
  */
 @Data
-public class Result {
+public class Result<T> {
 
     private Integer code; //返回的编码: 1:成功 0:失败
     private String msg; //返回的提示信息
-    private Object data; //返回的数据
+    private T data; //返回的数据
 
     //无返回数据的成功
-    public static Result success() {
-        Result result = new Result();
+    public static <T> Result<T> success() {
+        Result<T> result = new Result<T>();
         result.code = 1;
         result.msg = "success";
         return result;
     }
 
     //有返回数据的成功
-    public static Result success(Object data) {
-        Result result = new Result();
+    public static <T> Result<T> success(T data) {
+        Result<T> result = new Result<T>();
         result.code = 1;
         result.msg = "success";
         result.data = data;
@@ -30,8 +30,8 @@ public class Result {
     }
 
     //失败返回
-    public static Result error(String msg){
-        Result result = new Result();
+    public static <T> Result<T> error(String msg){
+        Result<T> result = new Result<T>();
         result.code = 0;
         result.msg = msg;
         return result;

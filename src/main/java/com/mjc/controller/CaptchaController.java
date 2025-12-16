@@ -1,6 +1,7 @@
 package com.mjc.controller;
 
 import com.google.code.kaptcha.Producer;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -18,6 +19,10 @@ import java.util.concurrent.TimeUnit;
 
 import static com.mjc.utils.RedisConstants.CAPTCHA_QUERY_KEY;
 
+/**
+ * 验证码相关接口
+ */
+@Tag(name = "图形验证码相关接口")
 @RestController
 public class CaptchaController {
 

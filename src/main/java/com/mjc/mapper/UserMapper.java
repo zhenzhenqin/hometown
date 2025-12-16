@@ -1,9 +1,8 @@
 package com.mjc.mapper;
 
-import com.mjc.bean.User;
+import com.mjc.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface UserMapper {

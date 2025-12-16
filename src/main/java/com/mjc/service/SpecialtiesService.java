@@ -1,8 +1,8 @@
 package com.mjc.service;
 
-import com.mjc.bean.PageResult;
-import com.mjc.bean.Specialties;
-import com.mjc.bean.SpecialtiesQueryParam;
+import com.mjc.entity.PageResult;
+import com.mjc.entity.Specialties;
+import com.mjc.entity.SpecialtiesQueryParam;
 
 import java.util.List;
 

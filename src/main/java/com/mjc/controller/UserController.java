@@ -1,7 +1,7 @@
 package com.mjc.controller;
 
-import com.mjc.bean.Result;
-import com.mjc.bean.User;
+import com.mjc.entity.Result;
+import com.mjc.entity.User;
 import com.mjc.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

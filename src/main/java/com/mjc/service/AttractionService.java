@@ -1,8 +1,8 @@
 package com.mjc.service;
 
-import com.mjc.bean.Attraction;
-import com.mjc.bean.AttractionQueryParam;
-import com.mjc.bean.PageResult;
+import com.mjc.entity.Attraction;
+import com.mjc.entity.AttractionQueryParam;
+import com.mjc.entity.PageResult;
 
 import java.util.List;
 

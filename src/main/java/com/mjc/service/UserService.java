@@ -1,6 +1,6 @@
 package com.mjc.service;
 
-import com.mjc.bean.User;
+import com.mjc.entity.User;
 
 public interface UserService {
 

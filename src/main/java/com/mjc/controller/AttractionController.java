@@ -1,9 +1,9 @@
 package com.mjc.controller;
 
-import com.mjc.bean.Attraction;
-import com.mjc.bean.AttractionQueryParam;
-import com.mjc.bean.PageResult;
-import com.mjc.bean.Result;
+import com.mjc.entity.Attraction;
+import com.mjc.entity.AttractionQueryParam;
+import com.mjc.entity.PageResult;
+import com.mjc.entity.Result;
 import com.mjc.service.AttractionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

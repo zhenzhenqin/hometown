@@ -1,9 +1,8 @@
 package com.mjc.service;
 
-import com.mjc.bean.Attraction;
-import com.mjc.bean.AttractionQueryParam;
-import com.mjc.bean.PageResult;
-import com.mjc.service.Impl.AttractionServiceImpl;
+import com.mjc.entity.Attraction;
+import com.mjc.entity.AttractionQueryParam;
+import com.mjc.entity.PageResult;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

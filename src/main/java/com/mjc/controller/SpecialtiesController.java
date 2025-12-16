@@ -1,9 +1,9 @@
 package com.mjc.controller;
 
-import com.mjc.bean.PageResult;
-import com.mjc.bean.Result;
-import com.mjc.bean.Specialties;
-import com.mjc.bean.SpecialtiesQueryParam;
+import com.mjc.entity.PageResult;
+import com.mjc.entity.Result;
+import com.mjc.entity.Specialties;
+import com.mjc.entity.SpecialtiesQueryParam;
 import com.mjc.service.SpecialtiesService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

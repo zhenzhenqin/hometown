@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mjc.mapper.SpecialtiesMapper">
-        <select id="list" resultType="com.mjc.bean.Specialties">
+        <select id="list" resultType="com.mjc.entity.Specialties">
             select * from specialty
             <where>
                 <if test="name != null and name != ''">

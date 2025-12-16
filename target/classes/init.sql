@@ -51,4 +51,18 @@ CREATE TABLE `attraction` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='旅游景点表';
 
 
-
+# 管理员
+CREATE TABLE `admin` (
+                         `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '管理员ID',
+                         `username` varchar(50) NOT NULL COMMENT '管理员用户名',
+                         `password` varchar(100) NOT NULL COMMENT '密码',
+                         `real_name` varchar(50) NOT NULL COMMENT '真实姓名',
+                         `email` varchar(50) NOT NULL COMMENT '邮箱',
+                         `phone` varchar(20) NOT NULL COMMENT '手机号',
+                         `introduction` text COMMENT '个人简介',
+                         `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                         `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                         PRIMARY KEY (`id`),
+                         UNIQUE KEY `admin_username_unique` (`username`),
+                         UNIQUE KEY `admin_email_unique` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='管理员信息表';

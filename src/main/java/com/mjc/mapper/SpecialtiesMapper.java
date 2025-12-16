@@ -1,7 +1,7 @@
 package com.mjc.mapper;
 
-import com.mjc.bean.Specialties;
-import com.mjc.bean.SpecialtiesQueryParam;
+import com.mjc.entity.Specialties;
+import com.mjc.entity.SpecialtiesQueryParam;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
