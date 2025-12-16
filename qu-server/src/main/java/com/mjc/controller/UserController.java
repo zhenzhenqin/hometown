@@ -1,8 +1,10 @@
 package com.mjc.controller;
 
 import com.mjc.Result.Result;
+import com.mjc.dto.UserLoginDTO;
 import com.mjc.entity.User;
 import com.mjc.service.UserService;
+import com.mjc.vo.UserLoginVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,27 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    /**
+     * 用户登录接口
+     * @param userLoginDTO
+     * @return
+     */
+    @Operation(summary = "用户登录接口")
+    @PostMapping("login")
+    public Result<UserLoginVO> Login(@RequestBody UserLoginDTO userLoginDTO){
+        log.info("登录的用户信息:{}", userLoginDTO);
+
+        User user = userService.userLogin(userLoginDTO);
+
+        UserLoginVO userLoginVO = UserLoginVO.builder()
+                .id(String.valueOf(user.getId()))
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .build();
+
+        return Result.success(userLoginVO);
+    }
 
     /**
      * 查询用户

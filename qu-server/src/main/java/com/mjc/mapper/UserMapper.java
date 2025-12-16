@@ -39,4 +39,12 @@ public interface UserMapper {
      */
     @Select("select * from user")
     List<User> findUser();
+
+    /**
+     * 登录接口
+     * @param username
+     * @return
+     */
+    @Select("select  * from user where username = #{username}")
+    User getUserByUsername(String username);
 }

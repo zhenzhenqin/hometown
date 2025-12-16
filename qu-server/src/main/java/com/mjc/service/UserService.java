@@ -1,5 +1,6 @@
 package com.mjc.service;
 
+import com.mjc.dto.UserLoginDTO;
 import com.mjc.entity.User;
 
 import java.util.List;
@@ -30,4 +31,11 @@ public interface UserService {
      * @return
      */
     List<User> findUser();
+
+    /**
+     * 用户登录接口实现
+     * @param userLoginDTO
+     * @return
+     */
+    User userLogin(UserLoginDTO userLoginDTO);
 }
