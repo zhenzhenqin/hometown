@@ -36,7 +36,9 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                         "/v3/api-docs/**",
                         "/attractions/all",
                         "/cultures/all",
-                        "/specialties/all"
+                        "/specialties/all",
+                        "/user/login",
+                        "/user/register"
                 );
     }
 }

@@ -82,6 +82,19 @@ public class UserController {
     }
 
     /**
+     * 启用禁用用户
+     * @param status
+     * @param id
+     * @return
+     */
+    @Operation(summary = "启用禁用用户接口")
+    @PostMapping("/status/{status}")
+    public Result startOrStopUser(@PathVariable Integer status, Long id){
+        log.info("启用禁用用户参数:{},{}", status, id);
+        return Result.success();
+    }
+
+    /**
      * 查询用户
      * @return
      */

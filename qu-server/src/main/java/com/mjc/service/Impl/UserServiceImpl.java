@@ -118,7 +118,11 @@ public class UserServiceImpl implements UserService {
 
         List<User> users = userMapper.queryAllUser(userQueryParam);
 
-        if (users != null) {
+        /*for (User user : users){
+            System.out.println("user的名字是" + user.getUsername());
+        }*/
+
+        if (!users.isEmpty()) {
             //能查询到用户
             throw new PhoneExistException(MessageConstant.PHONE_EXIST);
         }
@@ -129,7 +133,7 @@ public class UserServiceImpl implements UserService {
 
         List<User> users2 = userMapper.queryAllUser(userQueryParam2);
 
-        if (users2 != null) {
+        if (!users2.isEmpty()) {
             throw new AccountExistException(MessageConstant.ACCOUNT_EXIST);
         }
 
