@@ -220,6 +220,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void startOrStopUser(Integer status, Long id) {
         User user = User.builder()
+                .id(Math.toIntExact(id))
                 .status(status)
                 .updateTime(LocalDateTime.now())
                 .build();
