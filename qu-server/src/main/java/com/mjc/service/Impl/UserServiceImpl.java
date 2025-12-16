@@ -12,19 +12,24 @@ import com.mjc.exception.*;
 import com.mjc.mapper.UserMapper;
 import com.mjc.queryParam.UserQueryParam;
 import com.mjc.service.UserService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.mjc.utils.RedisConstants.CAPTCHA_QUERY_KEY;
+
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     /**
      * 查询用户
@@ -77,6 +82,20 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User userLogin(UserLoginDTO userLoginDTO) {
+        String uuid = userLoginDTO.getUuid();
+        String code = userLoginDTO.getCode();
+        // 构造 Redis Key
+        String verifyKey = CAPTCHA_QUERY_KEY + uuid;
+        // 从 Redis 查询真实验证码
+        String captcha = stringRedisTemplate.opsForValue().get(verifyKey);
+
+        // 校验：Redis中是否存在（是否过期）以及是否匹配
+        if (captcha == null || !captcha.equalsIgnoreCase(code)) {
+            throw new CaptchaException(MessageConstant.CAPTCHA_ERROR_OR_EXPIRED);
+        }
+        // 校验通过后，删除 Redis 中的 Key，防止重复使用
+        stringRedisTemplate.delete(verifyKey);
+
         String username = userLoginDTO.getUsername();
 
         //根据username去数据库中查询
@@ -110,6 +129,20 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User userRegister(UserRegisterDTO userRegisterDTO) {
+        String uuid = userRegisterDTO.getUuid();
+        String code = userRegisterDTO.getCode();
+        // 构造 Redis Key
+        String verifyKey = CAPTCHA_QUERY_KEY + uuid;
+        // 从 Redis 查询真实验证码
+        String captcha = stringRedisTemplate.opsForValue().get(verifyKey);
+
+        // 校验：Redis中是否存在（是否过期）以及是否匹配
+        if (captcha == null || !captcha.equalsIgnoreCase(code)) {
+            throw new CaptchaException(MessageConstant.CAPTCHA_ERROR_OR_EXPIRED);
+        }
+        // 校验通过后，删除 Redis 中的 Key，防止重复使用
+        stringRedisTemplate.delete(verifyKey);
+
         //先判断数据库中有无该手机号， 有的化则抛出异常
         String phone = userRegisterDTO.getPhone();
 
@@ -175,5 +208,20 @@ public class UserServiceImpl implements UserService {
         Page<User> p = (Page<User>) userlist;
 
         return new PageResult(p.getTotal(), p.getResult());
+    }
+
+    /**
+     * 启用禁用用户账号
+     * @param status
+     * @param id
+     */
+    @Override
+    public void startOrStopUser(Integer status, Long id) {
+        User user = User.builder()
+                .status(status)
+                .updateTime(LocalDateTime.now())
+                .build();
+
+        userMapper.updateUser(user);
     }
 }

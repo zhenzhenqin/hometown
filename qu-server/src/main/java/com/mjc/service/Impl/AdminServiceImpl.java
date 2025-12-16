@@ -7,6 +7,7 @@ import com.mjc.contant.MessageConstant;
 import com.mjc.contant.PasswordConstant;
 import com.mjc.contant.StatusConstant;
 import com.mjc.dto.AdminDTO;
+import com.mjc.exception.CaptchaException;
 import com.mjc.vo.AdminListVO;
 import com.mjc.dto.AdminLoginDTO;
 import com.mjc.dto.AdminPasswordEditDTO;
@@ -21,10 +22,13 @@ import com.mjc.exception.PasswordErrorException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static com.mjc.utils.RedisConstants.CAPTCHA_QUERY_KEY;
 
 @Slf4j
 @Service
@@ -33,6 +37,9 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private AdminMapper adminMapper;
 
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
     /**
      * 管理员登录
      * @param adminLoginDTO
@@ -40,6 +47,20 @@ public class AdminServiceImpl implements AdminService {
      */
     @Override
     public Admin login(AdminLoginDTO adminLoginDTO) {
+        String uuid = adminLoginDTO.getUuid();
+        String code = adminLoginDTO.getCode();
+        // 构造 Redis Key
+        String verifyKey = CAPTCHA_QUERY_KEY + uuid;
+        // 从 Redis 查询真实验证码
+        String captcha = stringRedisTemplate.opsForValue().get(verifyKey);
+
+        // 校验：Redis中是否存在（是否过期）以及是否匹配
+        if (captcha == null || !captcha.equalsIgnoreCase(code)) {
+            throw new CaptchaException(MessageConstant.CAPTCHA_ERROR_OR_EXPIRED);
+        }
+        // 校验通过后，删除 Redis 中的 Key，防止重复使用
+        stringRedisTemplate.delete(verifyKey);
+
         String username = adminLoginDTO.getUsername();
         String oldPassword = adminLoginDTO.getPassword();
 

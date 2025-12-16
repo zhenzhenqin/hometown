@@ -55,4 +55,11 @@ public interface UserService {
      * @return
      */
     PageResult queryAllUser(UserQueryParam userQueryParam);
+
+    /**
+     * 启用禁用用户账号
+     * @param status
+     * @param id
+     */
+    void startOrStopUser(Integer status, Long id);
 }

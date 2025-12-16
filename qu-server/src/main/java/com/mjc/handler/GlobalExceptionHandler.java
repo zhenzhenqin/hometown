@@ -1,9 +1,7 @@
 package com.mjc.handler;
 
 import com.mjc.Result.Result;
-import com.mjc.exception.AccountLockedException;
-import com.mjc.exception.AccountNotFoundException;
-import com.mjc.exception.PasswordErrorException;
+import com.mjc.exception.*;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -29,6 +27,18 @@ public class GlobalExceptionHandler {
     //捕获账号被锁定无法登录的异常
     @ExceptionHandler(AccountLockedException.class)
     public Result<?> handleAccountLockedException(AccountLockedException e){
+        return Result.error(e.getMessage());
+    }
+
+    //注册账号已存在拦截
+    @ExceptionHandler(AccountExistException.class)
+    public Result<?> handleAccountExistException(AccountExistException e){
+        return Result.error(e.getMessage());
+    }
+
+    //捕获验证码错误
+    @ExceptionHandler(CaptchaException.class)
+    public Result<?> handleCaptchaException(CaptchaException e){
         return Result.error(e.getMessage());
     }
 

@@ -91,6 +91,7 @@ public class UserController {
     @PostMapping("/status/{status}")
     public Result startOrStopUser(@PathVariable Integer status, Long id){
         log.info("启用禁用用户参数:{},{}", status, id);
+        userService.startOrStopUser(status, id);
         return Result.success();
     }
 
