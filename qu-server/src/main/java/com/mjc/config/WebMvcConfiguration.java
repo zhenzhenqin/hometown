@@ -33,7 +33,10 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                         "/doc.html",           // Swagger/Knife4j 文档相关
                         "/webjars/**",
                         "/swagger-resources",
-                        "/v3/api-docs/**"
+                        "/v3/api-docs/**",
+                        "/attractions/all",
+                        "/cultures/all",
+                        "/specialties/all"
                 );
     }
 }
