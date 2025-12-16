@@ -38,7 +38,8 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                         "/cultures/all",
                         "/specialties/all",
                         "/user/login",
-                        "/user/register"
+                        "/user/register",
+                        "/user/{id}"
                 );
     }
 }
