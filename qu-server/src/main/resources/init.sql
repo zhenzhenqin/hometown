@@ -68,3 +68,7 @@ CREATE TABLE `admin` (
                          UNIQUE KEY `admin_username_unique` (`username`),
                          UNIQUE KEY `admin_email_unique` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='管理员信息表';
+
+ALTER TABLE `attraction`
+    ADD COLUMN `liked` int unsigned DEFAULT '0' NULL COMMENT '点赞数量',
+    ADD COLUMN `disliked` int unsigned DEFAULT '0' NULL COMMENT '不喜欢数量';

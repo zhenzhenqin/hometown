@@ -1,10 +1,12 @@
 package com.mjc.service;
 
 import com.mjc.Result.PageResult;
+import com.mjc.annotation.AutoFill;
 import com.mjc.dto.UserLoginDTO;
 import com.mjc.dto.UserPasswordEditDTO;
 import com.mjc.dto.UserRegisterDTO;
 import com.mjc.entity.User;
+import com.mjc.enumeration.OperationType;
 import com.mjc.queryParam.UserQueryParam;
 
 import java.util.List;
