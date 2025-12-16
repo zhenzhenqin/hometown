@@ -4,8 +4,10 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.mjc.Result.PageResult;
 import com.mjc.contant.MessageConstant;
+import com.mjc.contant.PasswordConstant;
 import com.mjc.contant.StatusConstant;
 import com.mjc.dto.AdminDTO;
+import com.mjc.vo.AdminListVO;
 import com.mjc.dto.AdminLoginDTO;
 import com.mjc.dto.AdminPasswordEditDTO;
 import com.mjc.entity.Admin;
@@ -89,14 +91,14 @@ public class AdminServiceImpl implements AdminService {
      * @return
      */
     @Override
-    public AdminDTO getAdminById(Integer id) {
+    public AdminListVO getAdminById(Integer id) {
         Admin admin = adminMapper.getById(id);
 
         //属性拷贝
-        AdminDTO adminDTO = new AdminDTO();
-        BeanUtils.copyProperties(admin, adminDTO);
+        AdminListVO adminListVO = new AdminListVO();
+        BeanUtils.copyProperties(admin, adminListVO);
 
-        return adminDTO;
+        return adminListVO;
     }
 
     /**
@@ -182,5 +184,24 @@ public class AdminServiceImpl implements AdminService {
         admin.setUpdateTime(LocalDateTime.now());
 
         adminMapper.updateAdmin(admin);
+    }
+
+    /**
+     * 新增管理员
+     * @param adminDTO
+     */
+    @Override
+    public void save(AdminDTO adminDTO) {
+        Admin admin = new Admin();
+        BeanUtils.copyProperties(adminDTO, admin);
+
+        admin.setStatus(StatusConstant.ENABLE);
+
+        admin.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
+
+        admin.setCreateTime(LocalDateTime.now());
+        admin.setUpdateTime(LocalDateTime.now());
+
+        adminMapper.save(admin);
     }
 }

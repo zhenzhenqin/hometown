@@ -2,6 +2,7 @@ package com.mjc.service;
 
 import com.mjc.Result.PageResult;
 import com.mjc.dto.AdminDTO;
+import com.mjc.vo.AdminListVO;
 import com.mjc.dto.AdminLoginDTO;
 import com.mjc.dto.AdminPasswordEditDTO;
 import com.mjc.entity.Admin;
@@ -29,7 +30,7 @@ public interface AdminService {
      * @param id
      * @return
      */
-    AdminDTO getAdminById(Integer id);
+    AdminListVO getAdminById(Integer id);
 
     /**
      * 更新管理员
@@ -62,4 +63,10 @@ public interface AdminService {
      * @param adminPasswordEditDTO
      */
     void updatePassword(AdminPasswordEditDTO adminPasswordEditDTO);
+
+    /**
+     * 新增管理员
+     * @param adminDTO
+     */
+    void save(AdminDTO adminDTO);
 }

@@ -2,6 +2,7 @@ package com.mjc.mapper;
 
 import com.mjc.entity.Admin;
 import com.mjc.queryParam.AdminQueryParam;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -52,4 +53,12 @@ public interface AdminMapper {
      * @return
      */
     List<Admin> queryAllAdmin(AdminQueryParam adminQueryParam);
+
+    /**
+     * 新增员工
+     * @param admin
+     */
+    @Insert("INSERT INTO admin (username, password, real_name, status, email, phone, introduction, create_time, update_time) " +
+            "VALUES (#{username}, #{password}, #{realName}, #{status}, #{email}, #{phone}, #{introduction}, #{createTime}, #{updateTime})")
+    void save(Admin admin);
 }

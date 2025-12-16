@@ -4,6 +4,7 @@ import com.mjc.Result.PageResult;
 import com.mjc.Result.Result;
 import com.mjc.contant.JwtClaimsConstant;
 import com.mjc.dto.AdminDTO;
+import com.mjc.vo.AdminListVO;
 import com.mjc.dto.AdminLoginDTO;
 import com.mjc.dto.AdminPasswordEditDTO;
 import com.mjc.entity.Admin;
@@ -95,10 +96,23 @@ public class AdminController {
      */
     @GetMapping("/{id}")
     @Operation(summary = "根据id回显管理员信息")
-    public Result<AdminDTO> getUserById(@PathVariable Integer id){
+    public Result<AdminListVO> getUserById(@PathVariable Integer id){
         log.info("根据id回显管理员户信息: {}", id);
-        AdminDTO adminDTO = adminService.getAdminById(id);
-        return Result.success(adminDTO);
+        AdminListVO adminListVO = adminService.getAdminById(id);
+        return Result.success(adminListVO);
+    }
+
+    /**
+     * 新增管理员
+     * @param adminDTO
+     * @return
+     */
+    @PostMapping
+    @Operation(summary = "新增管理员")
+    public Result save(@RequestBody AdminDTO adminDTO){
+        log.info("新增管理员:{}", adminDTO);
+        adminService.save(adminDTO);
+        return Result.success();
     }
 
     /**
