@@ -5,6 +5,7 @@ import com.mjc.Result.Result;
 import com.mjc.contant.JwtClaimsConstant;
 import com.mjc.dto.AdminDTO;
 import com.mjc.dto.AdminLoginDTO;
+import com.mjc.dto.AdminPasswordEditDTO;
 import com.mjc.entity.Admin;
 import com.mjc.properties.JwtProperties;
 import com.mjc.queryParam.AdminQueryParam;
@@ -124,6 +125,19 @@ public class AdminController {
     public Result updateUser(@RequestBody Admin admin){
         log.info("更新管理员: {}", admin);
         adminService.updateAdmin(admin);
+        return Result.success();
+    }
+
+    /**
+     * 编辑管理员密码
+     * @param adminPasswordEditDTO 管理员id 旧密码 新密码
+     * @return
+     */
+    @PutMapping("/editPassword")
+    @Operation(summary = "编辑管理员密码")
+    public Result update(@RequestBody AdminPasswordEditDTO adminPasswordEditDTO){
+        log.info("更新管理员密码:{}", adminPasswordEditDTO);
+        adminService.updatePassword(adminPasswordEditDTO);
         return Result.success();
     }
 

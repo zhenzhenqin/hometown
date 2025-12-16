@@ -7,6 +7,7 @@ import com.mjc.contant.MessageConstant;
 import com.mjc.contant.StatusConstant;
 import com.mjc.dto.AdminDTO;
 import com.mjc.dto.AdminLoginDTO;
+import com.mjc.dto.AdminPasswordEditDTO;
 import com.mjc.entity.Admin;
 import com.mjc.mapper.AdminMapper;
 import com.mjc.queryParam.AdminQueryParam;
@@ -150,6 +151,35 @@ public class AdminServiceImpl implements AdminService {
                 .id(id.intValue())
                 .status(status)
                 .build();
+
+        adminMapper.updateAdmin(admin);
+    }
+
+    /**
+     * 更新管理员密码
+     * @param adminPasswordEditDTO
+     */
+    @Override
+    public void updatePassword(AdminPasswordEditDTO adminPasswordEditDTO) {
+        //1. 根据id查询数据库是否有
+        Admin admin = adminMapper.getById(Math.toIntExact(adminPasswordEditDTO.getAdminId()));
+
+        if (admin == null) {
+            throw new AccountNotFoundException(MessageConstant.ACCOUNT_NOT_FOUND);
+        }
+
+        //2. 将输入的密码进行比对
+        String oldPassword = adminPasswordEditDTO.getOldPassword();
+        //旧密码加密
+        String md5OldPassword = DigestUtils.md5DigestAsHex(oldPassword.getBytes());
+
+        //比对查询
+        if (md5OldPassword.equals(admin.getPassword())) {
+            throw new PasswordErrorException(MessageConstant.PASSWORD_ERROR);
+        }
+
+        admin.setPassword(adminPasswordEditDTO.getNewPassword());
+        admin.setUpdateTime(LocalDateTime.now());
 
         adminMapper.updateAdmin(admin);
     }

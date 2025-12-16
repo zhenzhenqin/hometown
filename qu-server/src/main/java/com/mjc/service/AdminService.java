@@ -3,6 +3,7 @@ package com.mjc.service;
 import com.mjc.Result.PageResult;
 import com.mjc.dto.AdminDTO;
 import com.mjc.dto.AdminLoginDTO;
+import com.mjc.dto.AdminPasswordEditDTO;
 import com.mjc.entity.Admin;
 import com.mjc.queryParam.AdminQueryParam;
 
@@ -55,4 +56,10 @@ public interface AdminService {
      * @param id
      */
     void startOrStop(Integer status, Long id);
+
+    /**
+     *  更新管理员密码
+     * @param adminPasswordEditDTO
+     */
+    void updatePassword(AdminPasswordEditDTO adminPasswordEditDTO);
 }
