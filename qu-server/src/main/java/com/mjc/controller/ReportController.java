@@ -2,6 +2,7 @@ package com.mjc.controller;
 
 
 import com.mjc.Result.Result;
+import com.mjc.annotation.AutoLog;
 import com.mjc.service.ReportService;
 import com.mjc.vo.ChartDataVO;
 import com.mjc.vo.DashboardVO;

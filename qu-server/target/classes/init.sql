@@ -72,3 +72,14 @@ CREATE TABLE `admin` (
 ALTER TABLE `attraction`
     ADD COLUMN `liked` int unsigned DEFAULT '0' NULL COMMENT '点赞数量',
     ADD COLUMN `disliked` int unsigned DEFAULT '0' NULL COMMENT '不喜欢数量';
+
+CREATE TABLE `sys_log` (
+                           `id` bigint(20) NOT NULL AUTO_INCREMENT,
+                           `username` varchar(50) DEFAULT NULL COMMENT '操作人',
+                           `operation` varchar(50) DEFAULT NULL COMMENT '操作描述(如: 新增用户)',
+                           `method` varchar(200) DEFAULT NULL COMMENT '请求方法(类名.方法名)',
+                           `params` text COMMENT '请求参数',
+                           `ip` varchar(64) DEFAULT NULL COMMENT '操作IP',
+                           `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '操作时间',
+                           PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统操作日志表';
