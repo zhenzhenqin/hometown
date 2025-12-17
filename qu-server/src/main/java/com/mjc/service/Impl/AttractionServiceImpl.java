@@ -11,6 +11,8 @@ import com.mjc.service.AttractionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -58,7 +60,16 @@ public class AttractionServiceImpl implements AttractionService {
 
         List<Attraction> list = attractionMapper.list(attractionQueryParam);
 
-        Page p = (Page) list;
+        List<Attraction> newList = new ArrayList<>();
+
+        //计算评分
+        for (Attraction attraction : list){
+            BigDecimal score = calculateScore(attraction);
+            attraction.setScore(score);
+            newList.add(attraction);
+        }
+
+        Page p = (Page) newList;
 
         PageResult pageResult = new PageResult(p.getTotal(), p.getResult());
 
@@ -103,6 +114,7 @@ public class AttractionServiceImpl implements AttractionService {
 
         //缓存未命中查询数据库
         Attraction dbattraction = attractionMapper.getById(id);
+        dbattraction.setScore(calculateScore(dbattraction));
 
         //重构缓存
         stringRedisTemplate.opsForValue().set(keyId, JSONUtil.toJsonStr(dbattraction), Duration.ofMinutes(30));
@@ -156,16 +168,25 @@ public class AttractionServiceImpl implements AttractionService {
     public List<Attraction> findAttraction(Long userId) {
         // 1. 原有的查询逻辑 (先查缓存或数据库)
 
-        List<Attraction> list = attractionMapper.findAttraction(); // [cite: 60]
+        List<Attraction> list = attractionMapper.findAttraction();
+
+        List<Attraction> newList = new ArrayList<>();
+
+        //计算评分
+        for (Attraction attraction : list){
+            BigDecimal score = calculateScore(attraction);
+            attraction.setScore(score);
+            newList.add(attraction);
+        }
 
         // 2. 如果用户已登录，遍历列表检查 Redis 状态
-        if (userId != null && list != null && !list.isEmpty()) {
-            for (Attraction attr : list) {
+        if (userId != null && newList != null && !newList.isEmpty()) {
+            for (Attraction attr : newList) {
                 checkUserStatus(attr, userId);
             }
         }
 
-        return list;
+        return newList;
     }
 
     /**
@@ -267,18 +288,42 @@ public class AttractionServiceImpl implements AttractionService {
         String dislikeKey = com.mjc.contant.RedisConstants.ATTRACTION_DISLIKED_KEY + attr.getId();
 
         // 2. 检查是否点赞
-        Boolean isMemberLiked = stringRedisTemplate.opsForSet().isMember(likeKey, userIdStr); // [cite: 16]
+        Boolean isMemberLiked = stringRedisTemplate.opsForSet().isMember(likeKey, userIdStr);
         if (Boolean.TRUE.equals(isMemberLiked)) {
             attr.setIsLiked(1); // 设置为已点赞
             return; // 互斥的，如果是赞了就不可能是踩，直接返回
         }
 
         // 3. 检查是否差评
-        Boolean isMemberDisliked = stringRedisTemplate.opsForSet().isMember(dislikeKey, userIdStr); // [cite: 27]
+        Boolean isMemberDisliked = stringRedisTemplate.opsForSet().isMember(dislikeKey, userIdStr);
         if (Boolean.TRUE.equals(isMemberDisliked)) {
             attr.setIsLiked(2); // 设置为已差评
         } else {
             attr.setIsLiked(0); // 无操作
         }
+    }
+
+
+    /**
+     * 计算分数方法
+     */
+    private BigDecimal calculateScore(Attraction attraction){
+        //获取景区id
+        Integer id = attraction.getId();
+
+        //根据景区id查询点赞和差评数量
+        Attraction a = attractionMapper.getById(id);
+        Integer likedNumber = a.getLiked();
+        Integer dislikedNumber = a.getDisliked();
+
+        BigDecimal result = BigDecimal.valueOf(0.0);
+
+        //计算分数 喜欢/总的
+        //如果两个都是0
+        if ((likedNumber + dislikedNumber) != 0) {
+            result = BigDecimal.valueOf(likedNumber / (likedNumber + dislikedNumber));
+        }
+
+        return result;
     }
 }
