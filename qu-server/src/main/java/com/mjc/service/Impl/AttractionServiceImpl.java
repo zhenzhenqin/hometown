@@ -153,19 +153,17 @@ public class AttractionServiceImpl implements AttractionService {
      * @return
      */
     @Override
-    public List<Attraction> findAttraction() {
-        //查询缓存
-        String attractionList = stringRedisTemplate.opsForValue().get(key);
+    public List<Attraction> findAttraction(Long userId) {
+        // 1. 原有的查询逻辑 (先查缓存或数据库)
 
-        if (attractionList != null){
-            return JSONUtil.toList(attractionList, Attraction.class);
+        List<Attraction> list = attractionMapper.findAttraction(); // [cite: 60]
+
+        // 2. 如果用户已登录，遍历列表检查 Redis 状态
+        if (userId != null && list != null && !list.isEmpty()) {
+            for (Attraction attr : list) {
+                checkUserStatus(attr, userId);
+            }
         }
-
-        //缓存未命中 查询数据库
-        List<Attraction> list = attractionMapper.findAttraction();
-
-        //将数据存入缓存中
-        stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(list), Duration.ofMinutes(30));
 
         return list;
     }
@@ -181,8 +179,8 @@ public class AttractionServiceImpl implements AttractionService {
 
         if (attraction != null) {
             attraction.setLiked(attraction.getLiked() + 1);
-            attraction.setUpdateTime(LocalDateTime.now());
             attractionMapper.updateAttraction(attraction);
+            clearAttractionCache();
             return true;
         }
 
@@ -200,8 +198,8 @@ public class AttractionServiceImpl implements AttractionService {
 
         if (attraction != null) {
             attraction.setLiked(attraction.getLiked() - 1);
-            attraction.setUpdateTime(LocalDateTime.now());
             attractionMapper.updateAttraction(attraction);
+            clearAttractionCache();
             return true;
         }
 
@@ -216,14 +214,15 @@ public class AttractionServiceImpl implements AttractionService {
     @Override
     public boolean disLiked(Integer id) {
         Attraction attraction = attractionMapper.getById(id);
-
         if (attraction != null) {
-            attraction.setLiked(attraction.getDisliked() + 1);
+            int currentDisliked = attraction.getDisliked() == null ? 0 : attraction.getDisliked();
+            attraction.setDisliked(currentDisliked + 1);
+
             attraction.setUpdateTime(LocalDateTime.now());
             attractionMapper.updateAttraction(attraction);
+            clearAttractionCache();
             return true;
         }
-
         return false;
     }
 
@@ -235,14 +234,16 @@ public class AttractionServiceImpl implements AttractionService {
     @Override
     public boolean noDisLiked(Integer id) {
         Attraction attraction = attractionMapper.getById(id);
-
         if (attraction != null) {
-            attraction.setLiked(attraction.getDisliked() - 1);
+            int currentDisliked = attraction.getDisliked() == null ? 0 : attraction.getDisliked();
+            // 防止变成负数
+            attraction.setDisliked(Math.max(0, currentDisliked - 1));
+
             attraction.setUpdateTime(LocalDateTime.now());
             attractionMapper.updateAttraction(attraction);
+            clearAttractionCache();
             return true;
         }
-
         return false;
     }
 
@@ -251,5 +252,33 @@ public class AttractionServiceImpl implements AttractionService {
      */
     private void clearAttractionCache() {
         stringRedisTemplate.delete(key);
+    }
+
+
+    /**
+     * 辅助方法：检查单个景点的用户状态
+     */
+    private void checkUserStatus(Attraction attr, Long userId) {
+        String userIdStr = userId.toString();
+
+        // 1. 构造 Redis Key
+        // 假设你的常量类里有这些定义
+        String likeKey = com.mjc.contant.RedisConstants.ATTRACTION_LIKED_KEY + attr.getId();
+        String dislikeKey = com.mjc.contant.RedisConstants.ATTRACTION_DISLIKED_KEY + attr.getId();
+
+        // 2. 检查是否点赞
+        Boolean isMemberLiked = stringRedisTemplate.opsForSet().isMember(likeKey, userIdStr); // [cite: 16]
+        if (Boolean.TRUE.equals(isMemberLiked)) {
+            attr.setIsLiked(1); // 设置为已点赞
+            return; // 互斥的，如果是赞了就不可能是踩，直接返回
+        }
+
+        // 3. 检查是否差评
+        Boolean isMemberDisliked = stringRedisTemplate.opsForSet().isMember(dislikeKey, userIdStr); // [cite: 27]
+        if (Boolean.TRUE.equals(isMemberDisliked)) {
+            attr.setIsLiked(2); // 设置为已差评
+        } else {
+            attr.setIsLiked(0); // 无操作
+        }
     }
 }

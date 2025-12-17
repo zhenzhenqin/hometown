@@ -21,7 +21,7 @@ public class Attraction {
     private String description; //景点描述
     private String image;  //图片
     private BigDecimal score;  //评分
-    //private Integer isLiked; //是否已经点赞  0:未点赞  1：点赞  2：差评
+    private Integer isLiked; //是否已经点赞  0:未点赞  1：点赞  2：差评
     private Integer liked;   //点赞数量
     private Integer disliked;   //不喜欢数量
     private LocalDateTime createTime;  //创建时间

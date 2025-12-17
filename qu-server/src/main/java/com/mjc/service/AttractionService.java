@@ -43,7 +43,7 @@ public interface AttractionService {
     /*
      * 查询所有景点
      */
-    List<Attraction> findAttraction();
+    List<Attraction> findAttraction(Long id);
 
     /**
      * 点赞功能

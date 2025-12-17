@@ -102,8 +102,15 @@ public class AttractionController {
      */
     @GetMapping("/all")
     @Operation(summary = "查询所有景点")
-    public Result findAttraction(){
-        List<Attraction> list = attractionService.findAttraction();
+    public Result findAttraction(HttpServletRequest request){
+        // 获取当前用户ID
+        String userIdStr = request.getHeader("User-ID");
+        Long userId = null;
+        if (userIdStr != null && !userIdStr.isEmpty()) {
+            userId = Long.valueOf(userIdStr);
+        }
+
+        List<Attraction> list = attractionService.findAttraction(userId);
         return Result.success(list);
     }
 
@@ -162,6 +169,8 @@ public class AttractionController {
      * @param request
      * @return
      */
+    @Operation(summary = "差评功能")
+    @GetMapping("/dislikes/{id}")
     public Result disLiked(@PathVariable Integer id, HttpServletRequest request){
         log.info("差评的景点id为: {}", id);
 

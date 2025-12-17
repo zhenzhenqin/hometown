@@ -41,8 +41,7 @@ public interface AttractionMapper {
      * 修改景点
      * @param attraction
      */
-    @AutoFill(value = OperationType.UPDATE)
-    @Update("update attraction set name = #{name}, location = #{location}, liked = #{liked}, description = #{description}, score = #{score}, update_time = #{updateTime} where id = #{id}")
+    @Update("update attraction set name = #{name}, location = #{location}, liked = #{liked}, disliked = #{disliked}, description = #{description}, score = #{score}, update_time = #{updateTime} where id = #{id}")
     void updateAttraction(Attraction attraction);
 
     /**
