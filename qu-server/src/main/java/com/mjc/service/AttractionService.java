@@ -57,5 +57,19 @@ public interface AttractionService {
      * @param id
      * @return
      */
+    boolean noLiked(Integer id);
+
+    /**
+     * 差评
+     * @param id
+     * @return
+     */
     boolean disLiked(Integer id);
+
+    /**
+     * 取消差评
+     * @param id
+     * @return
+     */
+    boolean noDisLiked(Integer id);
 }

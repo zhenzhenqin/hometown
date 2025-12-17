@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.mjc.contant.RedisConstants.ATTRACTION_DISLIKED_KEY;
 import static com.mjc.contant.RedisConstants.ATTRACTION_LIKED_KEY;
 
 @Slf4j
@@ -113,7 +114,7 @@ public class AttractionController {
      */
     @Operation(summary = "点赞功能")
     @GetMapping("/likes/{id}")
-    public Result queryBlogLikes(@PathVariable Integer id, HttpServletRequest request){
+    public Result liked(@PathVariable Integer id, HttpServletRequest request){
         log.info("点赞的景点id为: {}", id);
         //获取登录用户id
         //存在localstorage中 前端通过请求头将用户id发送到后端
@@ -143,7 +144,7 @@ public class AttractionController {
             //走到此处说明已经点赞了，则取消点赞
 
             //首先要将数据库减少1
-            boolean isSuccess = attractionService.disLiked(id);
+            boolean isSuccess = attractionService.noLiked(id);
 
             //4.2 把用户从Redis的set集合移除
             if(isSuccess){
@@ -153,4 +154,55 @@ public class AttractionController {
 
         return Result.success();
     }
+
+
+    /**
+     * 差评功能
+     * @param id
+     * @param request
+     * @return
+     */
+    public Result disLiked(@PathVariable Integer id, HttpServletRequest request){
+        log.info("差评的景点id为: {}", id);
+
+        //获取登录用户id
+        //存在localstorage中 前端通过请求头将用户id发送到后端
+        String userIdStr = request.getHeader("User-ID");
+
+        if (userIdStr == null || userIdStr.isEmpty()) {
+            return Result.error("未获取到用户信息");
+        }
+
+        Long userId = Long.valueOf(userIdStr);
+
+        //判断当前景区是否被当前用户点过赞
+        String key = ATTRACTION_DISLIKED_KEY + id;
+
+        //通过set判断里面是否存在该用户 来判断
+        Boolean isMember = stringRedisTemplate.opsForSet().isMember(key, userId.toString());
+
+        if (BooleanUtil.isFalse(isMember)) {
+            //如果不存在 则说明未点赞 那么可以进行点赞
+            boolean isSuccess = attractionService.disLiked(id);
+
+            //将用户保存到redis中
+            if (isSuccess){
+                stringRedisTemplate.opsForSet().add(key, userId.toString());
+            }
+        } else {
+            //走到此处说明已经点赞了，则取消点赞
+
+            //首先要将数据库减少1
+            boolean isSuccess = attractionService.noDisLiked(id);
+
+            //4.2 把用户从Redis的set集合移除
+            if(isSuccess){
+                stringRedisTemplate.opsForSet().remove(key,userId.toString());
+            }
+        }
+
+        return Result.success();
+    }
+
+
 }

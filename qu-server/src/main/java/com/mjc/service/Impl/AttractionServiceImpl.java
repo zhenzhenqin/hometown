@@ -195,11 +195,49 @@ public class AttractionServiceImpl implements AttractionService {
      * @return
      */
     @Override
-    public boolean disLiked(Integer id) {
+    public boolean noLiked(Integer id) {
         Attraction attraction = attractionMapper.getById(id);
 
         if (attraction != null) {
             attraction.setLiked(attraction.getLiked() - 1);
+            attraction.setUpdateTime(LocalDateTime.now());
+            attractionMapper.updateAttraction(attraction);
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * 差评
+     * @param id
+     * @return
+     */
+    @Override
+    public boolean disLiked(Integer id) {
+        Attraction attraction = attractionMapper.getById(id);
+
+        if (attraction != null) {
+            attraction.setLiked(attraction.getDisliked() + 1);
+            attraction.setUpdateTime(LocalDateTime.now());
+            attractionMapper.updateAttraction(attraction);
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * 取消差评
+     * @param id
+     * @return
+     */
+    @Override
+    public boolean noDisLiked(Integer id) {
+        Attraction attraction = attractionMapper.getById(id);
+
+        if (attraction != null) {
+            attraction.setLiked(attraction.getDisliked() - 1);
             attraction.setUpdateTime(LocalDateTime.now());
             attractionMapper.updateAttraction(attraction);
             return true;
