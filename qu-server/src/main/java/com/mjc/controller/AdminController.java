@@ -2,6 +2,7 @@ package com.mjc.controller;
 
 import com.mjc.Result.PageResult;
 import com.mjc.Result.Result;
+import com.mjc.annotation.AutoLog;
 import com.mjc.contant.JwtClaimsConstant;
 import com.mjc.dto.AdminDTO;
 import com.mjc.vo.AdminListVO;
@@ -42,6 +43,7 @@ public class AdminController {
      * @param adminLoginDTO 员工dto
      * @return 管理员vo
      */
+    @AutoLog("管理员登录")
     @PostMapping("/login")
     @Operation(summary = "管理员登陆")
     public Result<AdminVO> login(@RequestBody AdminLoginDTO adminLoginDTO){
@@ -121,6 +123,7 @@ public class AdminController {
      * @param id 管理员id
      * @return
      */
+    @AutoLog("启用禁用管理员账号")
     @Operation(summary = "启用禁用管理员账号")
     @PostMapping("/status/{status}")
     public Result startOrStopAdmin(@PathVariable Integer status, Long id){
@@ -134,6 +137,7 @@ public class AdminController {
      * @param admin
      * @return
      */
+    @AutoLog("更新管理员")
     @PutMapping()
     @Operation(summary = "更新管理员")
     public Result updateUser(@RequestBody Admin admin){
@@ -147,6 +151,7 @@ public class AdminController {
      * @param adminPasswordEditDTO 管理员id 旧密码 新密码
      * @return
      */
+    @AutoLog("编辑管理员密码")
     @PutMapping("/editPassword")
     @Operation(summary = "编辑管理员密码")
     public Result update(@RequestBody AdminPasswordEditDTO adminPasswordEditDTO){

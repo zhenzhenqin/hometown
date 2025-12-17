@@ -2,6 +2,7 @@ package com.mjc.controller;
 
 import com.mjc.Result.Result;
 import com.mjc.Result.PageResult;
+import com.mjc.annotation.AutoLog;
 import com.mjc.queryParam.CultureQueryParam;
 import com.mjc.entity.Culture;
 import com.mjc.service.CultureService;
@@ -38,6 +39,7 @@ public class CultureController {
      * 添加文化
      * @return
      */
+    @AutoLog("新增文化")
     @PostMapping
     @Operation(summary = "添加文化")
     public Result addCulture(@RequestBody Culture culture) {
@@ -63,6 +65,7 @@ public class CultureController {
      * @param culture
      * @return
      */
+    @AutoLog("修改文化")
     @PutMapping
     @Operation(summary = "修改文化")
     public Result updateCulture(@RequestBody Culture culture){
@@ -76,6 +79,7 @@ public class CultureController {
      * @param ids
      * @return
      */
+    @AutoLog("删除文化")
     @DeleteMapping("/{ids}")
     @Operation(summary = "删除文化")
     public Result deleteCulture(@PathVariable List<Integer> ids){

@@ -2,6 +2,7 @@ package com.mjc.controller;
 
 import com.mjc.Result.Result;
 import com.mjc.Result.PageResult;
+import com.mjc.annotation.AutoLog;
 import com.mjc.queryParam.SpecialtiesQueryParam;
 import com.mjc.entity.Specialties;
 import com.mjc.service.SpecialtiesService;
@@ -39,6 +40,7 @@ public class SpecialtiesController {
      * @param specialties
      * @return
      */
+    @AutoLog("新增特产")
     @PostMapping
     @Operation(summary = "新增特产")
     public Result addSpecialties(@RequestBody Specialties specialties){
@@ -64,6 +66,7 @@ public class SpecialtiesController {
      * @param specialties
      * @return
      */
+    @AutoLog("修改特产")
     @PutMapping
     @Operation(summary = "修改特产")
     public Result updateSpecialties(@RequestBody Specialties specialties){
@@ -77,6 +80,7 @@ public class SpecialtiesController {
      * @param ids
      * @return
      */
+    @AutoLog("删除特产")
     @DeleteMapping("/{ids}")
     @Operation(summary = "删除特产")
     public Result deleteByIds(@PathVariable List<Integer> ids){
@@ -85,6 +89,10 @@ public class SpecialtiesController {
         return Result.success();
     }
 
+    /**
+     * 查询所有特产
+     * @return
+     */
     @GetMapping("/all")
     @Operation(summary = "查询所有特产")
     public Result findSpecialties(){

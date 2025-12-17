@@ -2,6 +2,7 @@ package com.mjc.controller;
 
 import com.mjc.Result.PageResult;
 import com.mjc.Result.Result;
+import com.mjc.annotation.AutoLog;
 import com.mjc.dto.UserLoginDTO;
 import com.mjc.dto.UserPasswordEditDTO;
 import com.mjc.dto.UserRegisterDTO;
@@ -103,6 +104,7 @@ public class UserController {
      * @param id
      * @return
      */
+    @AutoLog("启用禁用用户接口")
     @Operation(summary = "启用禁用用户接口")
     @PostMapping("/status/{status}")
     public Result startOrStopUser(@PathVariable Integer status, Long id){

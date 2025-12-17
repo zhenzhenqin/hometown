@@ -3,6 +3,7 @@ package com.mjc.controller;
 import cn.hutool.core.util.BooleanUtil;
 import com.mjc.Result.Result;
 import com.mjc.Result.PageResult;
+import com.mjc.annotation.AutoLog;
 import com.mjc.queryParam.AttractionQueryParam;
 import com.mjc.entity.Attraction;
 import com.mjc.service.AttractionService;
@@ -49,6 +50,7 @@ public class AttractionController {
      * @param attraction
      * @return
      */
+    @AutoLog("新增景区")
     @PostMapping
     @Operation(summary = "新增景区")
     public Result addAttraction(@RequestBody Attraction attraction) {
@@ -75,6 +77,7 @@ public class AttractionController {
      * @param attraction
      * @return
      */
+    @AutoLog("修改景区")
     @PutMapping
     @Operation(summary = "修改景区")
     public Result updateAttraction(@RequestBody Attraction attraction) {
@@ -88,6 +91,7 @@ public class AttractionController {
      * @param ids
      * @return
      */
+    @AutoLog("删除景区")
     @DeleteMapping("/{ids}")
     @Operation(summary = "删除景区")
     public Result deleteByIds(@PathVariable List<Integer> ids) {
