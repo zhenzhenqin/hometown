@@ -4,6 +4,7 @@ import com.mjc.annotation.AutoFill;
 import com.mjc.enumeration.OperationType;
 import com.mjc.queryParam.AttractionQueryParam;
 import com.mjc.entity.Attraction;
+import com.mjc.vo.ChartDataVO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -70,4 +71,11 @@ public interface AttractionMapper {
      */
     @Select("select sum(liked) from attraction")
     Long sumLikes();
+
+    /**
+     * 获取热度最高的top5
+     * @return
+     */
+    @Select("select name, liked as value from attraction order by liked desc limit 5")
+    List<ChartDataVO> getTopPopular();
 }

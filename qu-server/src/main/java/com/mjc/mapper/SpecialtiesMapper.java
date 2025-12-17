@@ -4,6 +4,7 @@ import com.mjc.annotation.AutoFill;
 import com.mjc.enumeration.OperationType;
 import com.mjc.queryParam.SpecialtiesQueryParam;
 import com.mjc.entity.Specialties;
+import com.mjc.vo.ChartDataVO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -65,4 +66,29 @@ public interface SpecialtiesMapper {
      */
     @Select("select count(id) from specialty")
     Long countAll();
+
+    /**
+     * 获取特产价格区间分布
+     * @return
+     */
+    @Select("SELECT " +
+            "CASE " +
+            "  WHEN price < 50 THEN '50元以下' " +
+            "  WHEN price >= 50 AND price < 100 THEN '50-100元' " +
+            "  WHEN price >= 100 AND price < 200 THEN '100-200元' " +
+            "  WHEN price >= 200 AND price < 500 THEN '200-500元' " +
+            "  ELSE '500元以上' " +
+            "END AS name, " +
+            "COUNT(*) AS value " +
+            "FROM specialty " +
+            "GROUP BY " +
+            "CASE " +
+            "  WHEN price < 50 THEN '50元以下' " +
+            "  WHEN price >= 50 AND price < 100 THEN '50-100元' " +
+            "  WHEN price >= 100 AND price < 200 THEN '100-200元' " +
+            "  WHEN price >= 200 AND price < 500 THEN '200-500元' " +
+            "  ELSE '500元以上' " +
+            "END " +
+            "ORDER BY MIN(price)")
+    List<ChartDataVO> getPriceRangeDistribution();
 }

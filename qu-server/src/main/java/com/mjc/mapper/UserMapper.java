@@ -4,6 +4,7 @@ import com.mjc.annotation.AutoFill;
 import com.mjc.entity.User;
 import com.mjc.enumeration.OperationType;
 import com.mjc.queryParam.UserQueryParam;
+import com.mjc.vo.ChartDataVO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -71,4 +72,18 @@ public interface UserMapper {
      */
     @Select("select count(id) from user")
     Long countAll();
+
+    /**
+     * 图表：用户注册趋势 (折线图)
+     * @return
+     */
+    @Select("select DATE(create_time) as name, count(id) as value from user group by DATE(create_time) order by name")
+    List<ChartDataVO> getUserGrowthTrend();
+
+    /**
+     * 图表：用户状态分布 (饼图)
+     * @return
+     */
+    @Select("select case when status = 1 then '正常用户' else '被拉黑/禁用' end as name, count(id) as value from user group by status")
+    List<ChartDataVO> getUserStatusDistribution();
 }
