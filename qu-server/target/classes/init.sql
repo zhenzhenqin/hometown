@@ -83,3 +83,6 @@ CREATE TABLE `sys_log` (
                            `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '操作时间',
                            PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统操作日志表';
+
+-- 新增执行时长字段
+ALTER TABLE sys_log ADD COLUMN `time` bigint(20) DEFAULT 0 COMMENT '执行时长(毫秒)';
