@@ -57,4 +57,11 @@ public interface CultureMapper {
      */
     @Select("select * from culture")
     List<Culture> findCulture();
+
+    /**
+     * 统计数量
+     * @return
+     */
+    @Select("select count(id) from culture")
+    Long countAll();
 }

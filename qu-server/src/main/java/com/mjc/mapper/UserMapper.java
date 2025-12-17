@@ -64,4 +64,11 @@ public interface UserMapper {
     @AutoFill(OperationType.INSERT)
     @Insert("insert into user (username, password, phone, status) values (#{username}, #{password}, #{phone}, #{status})")
     void registerUser(User user);
+
+    /**
+     * 统计用户数量
+     * @return
+     */
+    @Select("select count(id) from user")
+    Long countAll();
 }

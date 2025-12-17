@@ -58,4 +58,11 @@ public interface SpecialtiesMapper {
      */
     @Select("select * from specialty")
     List<Specialties> findSpecialties();
+
+    /**
+     * 统计数量
+     * @return
+     */
+    @Select("select count(id) from specialty")
+    Long countAll();
 }

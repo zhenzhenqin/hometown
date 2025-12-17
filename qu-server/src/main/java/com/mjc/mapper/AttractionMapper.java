@@ -56,4 +56,18 @@ public interface AttractionMapper {
      */
     @Select("select * from attraction")
     List<Attraction> findAttraction();
+
+    /**
+     * 统计数量
+     * @return
+     */
+    @Select("select count(id) from attraction")
+    Long countAll();
+
+    /**
+     * 统计全站点赞数量
+     * @return
+     */
+    @Select("select sum(liked) from attraction")
+    Long sumLikes();
 }
