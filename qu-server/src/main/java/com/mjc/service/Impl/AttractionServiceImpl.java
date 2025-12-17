@@ -60,16 +60,13 @@ public class AttractionServiceImpl implements AttractionService {
 
         List<Attraction> list = attractionMapper.list(attractionQueryParam);
 
-        List<Attraction> newList = new ArrayList<>();
-
         //计算评分
         for (Attraction attraction : list){
             BigDecimal score = calculateScore(attraction);
             attraction.setScore(score);
-            newList.add(attraction);
         }
 
-        Page p = (Page) newList;
+        Page p = (Page) list;
 
         PageResult pageResult = new PageResult(p.getTotal(), p.getResult());
 
