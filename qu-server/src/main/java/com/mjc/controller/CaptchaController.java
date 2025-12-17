@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import static com.mjc.utils.RedisConstants.CAPTCHA_QUERY_KEY;
+import static com.mjc.contant.RedisConstants.CAPTCHA_QUERY_KEY;
 
 
 /**

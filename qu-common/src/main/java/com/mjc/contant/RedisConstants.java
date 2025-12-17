@@ -1,4 +1,4 @@
-package com.mjc.utils;
+package com.mjc.contant;
 
 public class RedisConstants {
     //缓存景点key
@@ -10,4 +10,10 @@ public class RedisConstants {
 
     //验证码key
     public static final String CAPTCHA_QUERY_KEY = "captcha_codes:";
+
+    //景区点赞key
+    public static final String ATTRACTION_LIKED_KEY = "attraction:liked:";
+
+    //景区差评key
+    public static final String ATTRACTION_DISLIKED_KEY = "attraction:disliked:";
 }

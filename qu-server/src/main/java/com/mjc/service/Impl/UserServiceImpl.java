@@ -8,7 +8,6 @@ import com.mjc.contant.StatusConstant;
 import com.mjc.dto.UserLoginDTO;
 import com.mjc.dto.UserPasswordEditDTO;
 import com.mjc.dto.UserRegisterDTO;
-import com.mjc.entity.Admin;
 import com.mjc.entity.User;
 import com.mjc.exception.*;
 import com.mjc.mapper.UserMapper;
@@ -22,7 +21,7 @@ import org.springframework.util.DigestUtils;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.mjc.utils.RedisConstants.CAPTCHA_QUERY_KEY;
+import static com.mjc.contant.RedisConstants.CAPTCHA_QUERY_KEY;
 
 @Service
 public class UserServiceImpl implements UserService {

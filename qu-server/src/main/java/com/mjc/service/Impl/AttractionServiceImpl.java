@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.mjc.utils.RedisConstants.ATTRACTION_QUERY_KEY;
+import static com.mjc.contant.RedisConstants.ATTRACTION_QUERY_KEY;
 
 
 @Service
@@ -168,6 +168,44 @@ public class AttractionServiceImpl implements AttractionService {
         stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(list), Duration.ofMinutes(30));
 
         return list;
+    }
+
+    /**
+     * 点赞相关功能
+     * @param id
+     * @return
+     */
+    @Override
+    public Boolean liked(Integer id) {
+        Attraction attraction = attractionMapper.getById(id);
+
+        if (attraction != null) {
+            attraction.setLiked(attraction.getLiked() + 1);
+            attraction.setUpdateTime(LocalDateTime.now());
+            attractionMapper.updateAttraction(attraction);
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * 取消点赞功能
+     * @param id
+     * @return
+     */
+    @Override
+    public boolean disLiked(Integer id) {
+        Attraction attraction = attractionMapper.getById(id);
+
+        if (attraction != null) {
+            attraction.setLiked(attraction.getLiked() - 1);
+            attraction.setUpdateTime(LocalDateTime.now());
+            attractionMapper.updateAttraction(attraction);
+            return true;
+        }
+
+        return false;
     }
 
     /**

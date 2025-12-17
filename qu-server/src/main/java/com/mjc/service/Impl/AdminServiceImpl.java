@@ -28,7 +28,7 @@ import org.springframework.util.DigestUtils;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.mjc.utils.RedisConstants.CAPTCHA_QUERY_KEY;
+import static com.mjc.contant.RedisConstants.CAPTCHA_QUERY_KEY;
 
 @Slf4j
 @Service

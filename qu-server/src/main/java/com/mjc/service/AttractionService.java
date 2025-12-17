@@ -44,4 +44,18 @@ public interface AttractionService {
      * 查询所有景点
      */
     List<Attraction> findAttraction();
+
+    /**
+     * 点赞功能
+     * @param id
+     * @return
+     */
+    Boolean liked(Integer id);
+
+    /**
+     * 取消点赞功能
+     * @param id
+     * @return
+     */
+    boolean disLiked(Integer id);
 }

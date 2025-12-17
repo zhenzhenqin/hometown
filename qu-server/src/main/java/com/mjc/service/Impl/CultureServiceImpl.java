@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.mjc.utils.RedisConstants.CULTURE_QUERY_KEY;
+import static com.mjc.contant.RedisConstants.CULTURE_QUERY_KEY;
 
 
 @Service
