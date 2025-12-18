@@ -42,7 +42,6 @@ public interface AttractionMapper {
      * 修改景点
      * @param attraction
      */
-    @Update("update attraction set name = #{name}, location = #{location},image = #{image}, liked = #{liked}, disliked = #{disliked}, description = #{description}, score = #{score}, update_time = #{updateTime} where id = #{id}")
     void updateAttraction(Attraction attraction);
 
     /**

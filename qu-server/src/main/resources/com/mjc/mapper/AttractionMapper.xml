@@ -25,6 +25,26 @@
             #{id}
         </foreach>
     </delete>
+
+    <!--修改景点-->
+    <update id="updateAttraction" parameterType="com.mjc.entity.Attraction">
+        update attraction
+        <set>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="location != null and location != ''">location = #{location},</if>
+            <if test="description != null and description != ''">description = #{description},</if>
+            <if test="image != null and image != ''">image = #{image},</if>
+            <if test="score != null">score = #{score},</if>
+            <if test="isLiked != null">is_liked = #{isLiked},</if>
+            <if test="liked != null">liked = #{liked},</if>
+            <if test="disliked != null">disliked = #{disliked},</if>
+            <if test="longitude != null">longitude = #{longitude},</if>
+            <if test="latitude != null">latitude = #{latitude},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            update_time = #{updateTime}
+        </set>
+        where id = #{id}
+    </update>
 </mapper>
 
 

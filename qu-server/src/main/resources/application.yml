@@ -67,6 +67,13 @@ hometown:
     # 设置前端传递过来的令牌名称
     admin-token-name: token
 
+  # 自定义文件配置
+  file:
+    # 图片存储的硬盘绝对路径 (注意 Windows 路径格式)
+    upload-path: D:/Code/Hometown/images/
+    # 前端访问的 URL 前缀，比如 http://localhost:8080/images/xxx.jpg
+    access-path: /images/
+
 
 
 # 图形化验证码
