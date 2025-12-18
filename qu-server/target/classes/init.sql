@@ -86,3 +86,8 @@ CREATE TABLE `sys_log` (
 
 -- 新增执行时长字段
 ALTER TABLE sys_log ADD COLUMN `time` bigint(20) DEFAULT 0 COMMENT '执行时长(毫秒)';
+
+-- 新增经纬度
+ALTER TABLE `attraction`
+    ADD COLUMN `longitude` decimal(10, 6) DEFAULT NULL COMMENT '经度',
+    ADD COLUMN `latitude` decimal(10, 6) DEFAULT NULL COMMENT '纬度';
