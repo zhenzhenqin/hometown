@@ -4,6 +4,7 @@ import cn.hutool.json.JSONUtil;
 import com.mjc.annotation.AutoLog;
 import com.mjc.contant.JwtClaimsConstant;
 import com.mjc.entity.SysLog;
+import com.mjc.mapper.AdminMapper;
 import com.mjc.mapper.SysLogMapper;
 import com.mjc.mapper.UserMapper;
 import com.mjc.properties.JwtProperties;
@@ -38,7 +39,7 @@ public class LogAspect {
     @Autowired
     private SysLogMapper sysLogMapper;
     @Autowired
-    private UserMapper userMapper;
+    private AdminMapper adminMapper;
 
     @Autowired
     private JwtProperties jwtProperties;
@@ -119,7 +120,7 @@ public class LogAspect {
 
             //根据adminId 查询用户名
             if (adminId != null) {
-                String username = userMapper.getUserById(adminId).getUsername();
+                String username = adminMapper.getById(adminId).getUsername();
                 sysLog.setUsername(username);
             }
 
