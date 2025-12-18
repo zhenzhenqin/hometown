@@ -35,6 +35,7 @@
         <mysql.version>8.0.33</mysql.version>
         <lombok.version>1.18.30</lombok.version>
         <aspectj.version>1.9.7</aspectj.version>
+        <oshi.version>6.4.4</oshi.version>
         <aliyun-sdk-oss.version>3.17.4</aliyun-sdk-oss.version>
     </properties>
 
@@ -149,6 +150,13 @@
                 <groupId>org.aspectj</groupId>
                 <artifactId>aspectjweaver</artifactId>
                 <version>${aspectj.version}</version>
+            </dependency>
+
+            <!-- OSHI依赖 -->
+            <dependency>
+                <groupId>com.github.oshi</groupId>
+                <artifactId>oshi-core</artifactId>
+                <version>${oshi.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
