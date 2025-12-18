@@ -26,4 +26,7 @@ public class Attraction {
     private Integer disliked;   //不喜欢数量
     private LocalDateTime createTime;  //创建时间
     private LocalDateTime updateTime;  //更新时间
+
+    private Double longitude; // 经度
+    private Double latitude;  // 纬度
 }
