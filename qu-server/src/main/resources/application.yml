@@ -69,6 +69,8 @@ hometown:
 
 
 
+
+
 # 图形化验证码
 kaptcha:
   border: "yes"

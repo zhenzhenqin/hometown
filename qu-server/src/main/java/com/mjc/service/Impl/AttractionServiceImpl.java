@@ -197,6 +197,9 @@ public class AttractionServiceImpl implements AttractionService {
 
         if (attraction != null) {
             attraction.setLiked(attraction.getLiked() + 1);
+            //更新评分
+            BigDecimal score = calculateScore(attraction);
+            attraction.setScore(score);
             attractionMapper.updateAttraction(attraction);
             clearAttractionCache();
             return true;
@@ -216,6 +219,9 @@ public class AttractionServiceImpl implements AttractionService {
 
         if (attraction != null) {
             attraction.setLiked(attraction.getLiked() - 1);
+            //更新评分
+            BigDecimal score = calculateScore(attraction);
+            attraction.setScore(score);
             attractionMapper.updateAttraction(attraction);
             clearAttractionCache();
             return true;
@@ -235,8 +241,9 @@ public class AttractionServiceImpl implements AttractionService {
         if (attraction != null) {
             int currentDisliked = attraction.getDisliked() == null ? 0 : attraction.getDisliked();
             attraction.setDisliked(currentDisliked + 1);
-
-            attraction.setUpdateTime(LocalDateTime.now());
+            //更新评分
+            BigDecimal score = calculateScore(attraction);
+            attraction.setScore(score);
             attractionMapper.updateAttraction(attraction);
             clearAttractionCache();
             return true;
@@ -256,8 +263,9 @@ public class AttractionServiceImpl implements AttractionService {
             int currentDisliked = attraction.getDisliked() == null ? 0 : attraction.getDisliked();
             // 防止变成负数
             attraction.setDisliked(Math.max(0, currentDisliked - 1));
-
-            attraction.setUpdateTime(LocalDateTime.now());
+            //更新评分
+            BigDecimal score = calculateScore(attraction);
+            attraction.setScore(score);
             attractionMapper.updateAttraction(attraction);
             clearAttractionCache();
             return true;
@@ -318,7 +326,7 @@ public class AttractionServiceImpl implements AttractionService {
         //计算分数 喜欢/总的
         //如果两个都是0
         if ((likedNumber + dislikedNumber) != 0) {
-            result = BigDecimal.valueOf(likedNumber / (likedNumber + dislikedNumber));
+            result = BigDecimal.valueOf(likedNumber / (likedNumber + dislikedNumber) * 10);
         }
 
         return result;

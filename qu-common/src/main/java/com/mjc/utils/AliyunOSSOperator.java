@@ -1,9 +1,11 @@
+// AliyunOSSOperator.java
 package com.mjc.utils;
 
 import com.aliyun.oss.*;
-import com.aliyun.oss.common.auth.CredentialsProviderFactory;
-import com.aliyun.oss.common.auth.EnvironmentVariableCredentialsProvider;
+import com.aliyun.oss.common.auth.DefaultCredentialProvider;
 import com.aliyun.oss.common.comm.SignVersion;
+import com.mjc.properties.AliOssProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.io.ByteArrayInputStream;
 import java.time.LocalDate;
@@ -13,13 +15,15 @@ import java.util.UUID;
 @Component
 public class AliyunOSSOperator {
 
-    private String endpoint = "https://oss-cn-hangzhou.aliyuncs.com";
-    private String bucketName = "java-management-016";
-    private String region = "cn-hangzhou";
+    @Autowired
+    private AliOssProperties aliOssProperties;
 
     public String upload(byte[] content, String originalFilename) throws Exception {
-        // 从环境变量中获取访问凭证。运行本代码示例之前，请确保已设置环境变量OSS_ACCESS_KEY_ID和OSS_ACCESS_KEY_SECRET。
-        EnvironmentVariableCredentialsProvider credentialsProvider = CredentialsProviderFactory.newEnvironmentVariableCredentialsProvider();
+        // 使用配置中的AccessKey创建凭证提供者
+        DefaultCredentialProvider credentialProvider = new DefaultCredentialProvider(
+                aliOssProperties.getAccessKeyId(),
+                aliOssProperties.getAccessKeySecret()
+        );
 
         // 填写Object完整路径，例如202406/1.png。Object完整路径中不能包含Bucket名称。
         //获取当前系统日期的字符串,格式为 yyyy/MM
@@ -32,19 +36,18 @@ public class AliyunOSSOperator {
         ClientBuilderConfiguration clientBuilderConfiguration = new ClientBuilderConfiguration();
         clientBuilderConfiguration.setSignatureVersion(SignVersion.V4);
         OSS ossClient = OSSClientBuilder.create()
-                .endpoint(endpoint)
-                .credentialsProvider(credentialsProvider)
+                .endpoint(aliOssProperties.getEndpoint())
+                .credentialsProvider(credentialProvider)
                 .clientConfiguration(clientBuilderConfiguration)
-                .region(region)
+                .region(aliOssProperties.getRegion())
                 .build();
 
         try {
-            ossClient.putObject(bucketName, objectName, new ByteArrayInputStream(content));
+            ossClient.putObject(aliOssProperties.getBucketName(), objectName, new ByteArrayInputStream(content));
         } finally {
             ossClient.shutdown();
         }
 
-        return endpoint.split("//")[0] + "//" + bucketName + "." + endpoint.split("//")[1] + "/" + objectName;
+        return aliOssProperties.getEndpoint().split("//")[0] + "//" + aliOssProperties.getBucketName() + "." + aliOssProperties.getEndpoint().split("//")[1] + "/" + objectName;
     }
-
 }

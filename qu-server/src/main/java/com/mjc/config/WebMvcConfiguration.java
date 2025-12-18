@@ -41,7 +41,9 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                         "/user/register",
                         "/user/{id}",
                         "/attractions/likes/{id}",
-                        "/attractions/dislikes/{id}"
+                        "/attractions/dislikes/{id}",
+                        "/upload",
+                        "/user/update"
                 );
     }
 }

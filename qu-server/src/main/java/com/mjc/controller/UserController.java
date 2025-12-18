@@ -143,7 +143,7 @@ public class UserController {
      * @param user
      * @return
      */
-    @PutMapping()
+    @PutMapping("/update")
     @Operation(summary = "更新用户")
     public Result updateUser(@RequestBody User user){
         log.info("更新用户: {}", user);
