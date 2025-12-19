@@ -13,6 +13,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -167,23 +168,20 @@ public class AttractionServiceImpl implements AttractionService {
 
         List<Attraction> list = attractionMapper.findAttraction();
 
-        List<Attraction> newList = new ArrayList<>();
-
         //计算评分
         for (Attraction attraction : list){
             BigDecimal score = calculateScore(attraction);
             attraction.setScore(score);
-            newList.add(attraction);
         }
 
         // 2. 如果用户已登录，遍历列表检查 Redis 状态
-        if (userId != null && newList != null && !newList.isEmpty()) {
-            for (Attraction attr : newList) {
+        if (userId != null && list != null && !list.isEmpty()) {
+            for (Attraction attr : list) {
                 checkUserStatus(attr, userId);
             }
         }
 
-        return newList;
+        return list;
     }
 
     /**
@@ -325,8 +323,11 @@ public class AttractionServiceImpl implements AttractionService {
 
         //计算分数 喜欢/总的
         //如果两个都是0
-        if ((likedNumber + dislikedNumber) != 0) {
-            result = BigDecimal.valueOf(likedNumber / (likedNumber + dislikedNumber) * 10);
+
+        if ((likedNumber + dislikedNumber) == 0) {
+            result = BigDecimal.valueOf(0.0);
+        } else {
+            result = BigDecimal.valueOf((likedNumber / (double) (likedNumber + dislikedNumber)) * 10).setScale(1, RoundingMode.HALF_UP);
         }
 
         return result;
