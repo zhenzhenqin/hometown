@@ -6,7 +6,6 @@ import com.mjc.contant.JwtClaimsConstant;
 import com.mjc.entity.SysLog;
 import com.mjc.mapper.AdminMapper;
 import com.mjc.mapper.SysLogMapper;
-import com.mjc.mapper.UserMapper;
 import com.mjc.properties.JwtProperties;
 import com.mjc.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
@@ -46,7 +45,6 @@ public class LogAspect {
 
     /**
      * 环绕通知 @Around
-     * 既可以在目标方法执行前做操作，也可以在执行后做操作
      */
     @Around("@annotation(autoLog)")
     public Object around(ProceedingJoinPoint point, AutoLog autoLog) throws Throwable {

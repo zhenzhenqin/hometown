@@ -122,10 +122,12 @@ public class AttractionServiceImpl implements AttractionService {
 
     /**
      * 修改景点
+     *
      * @param attraction
+     * @return
      */
     @Override
-    public void updateAttraction(Attraction attraction) {
+    public boolean updateAttraction(Attraction attraction) {
         //修改的景点的idkey
         String keyId = key + attraction.getId();
 
@@ -137,6 +139,7 @@ public class AttractionServiceImpl implements AttractionService {
         stringRedisTemplate.delete(keyId);
 
         clearAttractionCache();
+        return false;
     }
 
     /**
@@ -164,8 +167,13 @@ public class AttractionServiceImpl implements AttractionService {
      */
     @Override
     public List<Attraction> findAttraction(Long userId) {
-        // 1. 原有的查询逻辑 (先查缓存或数据库)
+        // 1. 原有的查询逻辑  先查询缓存 缓存没有再查询数据库
+        String s = stringRedisTemplate.opsForValue().get(key);
+        if (s != null) {
+            return JSONUtil.toList(s, Attraction.class);
+        }
 
+        //2. 缓存为空 直接查询数据库
         List<Attraction> list = attractionMapper.findAttraction();
 
         //计算评分
@@ -261,7 +269,6 @@ public class AttractionServiceImpl implements AttractionService {
             int currentDisliked = attraction.getDisliked() == null ? 0 : attraction.getDisliked();
             // 防止变成负数
             attraction.setDisliked(Math.max(0, currentDisliked - 1));
-            //更新评分
             BigDecimal score = calculateScore(attraction);
             attraction.setScore(score);
             attractionMapper.updateAttraction(attraction);

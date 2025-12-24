@@ -75,7 +75,6 @@ hometown:
     access-path: /images/
 
 
-
 # 图形化验证码
 kaptcha:
   border: "yes"
@@ -87,5 +86,3 @@ kaptcha:
   session-key: "kaptchaCodeMath"
   text-producer-impl: "com.mjc.common.KaptchaTextCreator"
   noise-impl: "com.google.code.kaptcha.impl.NoNoise"
-
-

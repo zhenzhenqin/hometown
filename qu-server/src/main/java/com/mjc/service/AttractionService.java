@@ -32,7 +32,7 @@ public interface AttractionService {
      * 修改景点
      * @param attraction
      */
-    void updateAttraction(Attraction attraction);
+    boolean updateAttraction(Attraction attraction);
 
     /**
      * 批量删除景点
