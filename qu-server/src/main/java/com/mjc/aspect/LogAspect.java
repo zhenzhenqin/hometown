@@ -7,6 +7,7 @@ import com.mjc.entity.SysLog;
 import com.mjc.mapper.AdminMapper;
 import com.mjc.mapper.SysLogMapper;
 import com.mjc.properties.JwtProperties;
+import com.mjc.utils.IpUtil;
 import com.mjc.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
@@ -77,17 +78,17 @@ public class LogAspect {
 
         SysLog sysLog = new SysLog();
 
-        // --- 1. 注解上的描述 (如: "新增用户") ---
+        // --- 1. 注解上的描述 ---
         if (autoLog != null) {
             sysLog.setOperation(autoLog.value());
         }
 
-        // --- 2. 请求的方法名 (如: com.mjc.controller.UserController.add) ---
+        // --- 2. 请求的方法名  ---
         String className = point.getTarget().getClass().getName();
         String methodName = signature.getName();
         sysLog.setMethod(className + "." + methodName + "()");
 
-        // --- 3. 请求参数 (过滤掉文件流和Request/Response对象) ---
+        // --- 3. 请求参数  ---
         Object[] args = point.getArgs();
         try {
             List<Object> arguments = new ArrayList<>();
@@ -107,21 +108,27 @@ public class LogAspect {
         // --- 4. 获取 IP 和 用户名 ---
         HttpServletRequest request = getHttpServletRequest();
         if (request != null) {
-            sysLog.setIp(getIpAddr(request));
+            // 使用工具类获取真实IP
+            sysLog.setIp(IpUtil.getIpAddr(request));
 
-            //  Token，解析 Token 获取用户名
-            // 从请求头中获取token
-            String token = request.getHeader("token");
-            //解析token 获取用户名
-            Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
-            Integer adminId= (Integer) claims.get(JwtClaimsConstant.ADMIN_ID);
-
-            //根据adminId 查询用户名
-            if (adminId != null) {
-                String username = adminMapper.getById(adminId).getUsername();
-                sysLog.setUsername(username);
+            // ... Token 解析逻辑保持不变 ...
+            try {
+                String token = request.getHeader("token");
+                if (token != null) {
+                    Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
+                    Integer adminId = (Integer) claims.get(JwtClaimsConstant.ADMIN_ID);
+                    if (adminId != null) {
+                        // 建议加个非空判断防止 adminMapper 查不到报错
+                        var admin = adminMapper.getById(adminId);
+                        if(admin != null) {
+                            sysLog.setUsername(admin.getUsername());
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                // Token解析失败不应该影响日志记录，可以记录为"未知用户"或打印warn日志
+                log.warn("日志记录时Token解析失败: {}", e.getMessage());
             }
-
         }
 
         // --- 5. 其他信息 ---
@@ -139,29 +146,5 @@ public class LogAspect {
     private HttpServletRequest getHttpServletRequest() {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         return attributes != null ? attributes.getRequest() : null;
-    }
-
-    /**
-     * 获取真实IP地址 (处理 Nginx 代理情况)
-     */
-    public static String getIpAddr(HttpServletRequest request) {
-        if (request == null) {
-            return "unknown";
-        }
-        String ip = request.getHeader("x-forwarded-for");
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("Proxy-Client-IP");
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("WL-Proxy-Client-IP");
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getRemoteAddr();
-        }
-        // 如果是多级代理，取第一个IP
-        if (ip != null && ip.contains(",")) {
-            ip = ip.split(",")[0];
-        }
-        return "0:0:0:0:0:0:0:1".equals(ip) ? "127.0.0.1" : ip;
     }
 }

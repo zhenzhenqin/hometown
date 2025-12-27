@@ -171,6 +171,9 @@ public class UserServiceImpl implements UserService {
             throw new AccountExistException(MessageConstant.ACCOUNT_EXIST);
         }
 
+        //返回前端密码
+        String returnPass = userRegisterDTO.getPassword();
+
         //防小人结束 开始注册
         User user = User.builder()
                 .username(userRegisterDTO.getUsername())
@@ -182,9 +185,10 @@ public class UserServiceImpl implements UserService {
         //持久化
         userMapper.registerUser(user);
 
-        user.setPassword(userRegisterDTO.getPassword()); //将原密码返回用于登录
+        User registerUser = userMapper.getUserByUsername(userRegisterDTO.getUsername());
+        registerUser.setPassword(returnPass); //将原密码返回用于登录
 
-        return user;
+        return registerUser;
     }
 
     /**
@@ -254,5 +258,14 @@ public class UserServiceImpl implements UserService {
         user.setUpdateTime(LocalDateTime.now());
 
         userMapper.updateUser(user);
+    }
+
+    /**
+     * 更新用户登录时的ip地址和城市信息
+     * @param user1
+     */
+    @Override
+    public void updateIpAndCity(User user1) {
+        userMapper.updateIpAndCity(user1);
     }
 }

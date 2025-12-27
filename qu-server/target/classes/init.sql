@@ -40,22 +40,29 @@ CREATE TABLE `specialty` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='家乡特产表';
 
 
-CREATE TABLE `attraction` (
-                              `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '景点ID',
-                              `name` varchar(100) NOT NULL COMMENT '景点名称',
-                              `location` varchar(100) NOT NULL COMMENT '景点位置',
-                              `description` text NOT NULL COMMENT '景点描述',
-                              `image` varchar(200) DEFAULT NULL COMMENT '景点图片',
-                              `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-                              `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-                              PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='旅游景点表';
+create table attraction
+(
+    id          int auto_increment comment '景点ID'
+        primary key,
+    name        varchar(100)                            not null comment '景点名称',
+    location    varchar(100)                            not null comment '景点位置',
+    description text                                    null comment '景点描述',
+    image       varchar(200)                            null comment '景点图片',
+    create_time datetime      default CURRENT_TIMESTAMP null comment '创建时间',
+    update_time datetime      default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment '更新时间',
+    score       decimal(3, 1) default 0.0               null comment '景点评分分数',
+    liked       int unsigned  default '0'               null comment '点赞数量',
+    disliked    int unsigned  default '0'               null comment '不喜欢数量',
+    longitude   decimal(10, 6)                          null comment '经度',
+    latitude    decimal(10, 6)                          null comment '纬度'
+)
+    comment '旅游景点表' charset = utf8mb4;
 
 
 # 管理员
 CREATE TABLE `admin` (
                          `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '管理员ID',
-                         `username` varchar(50) NOT NULL COMMENT '管理员用户名',
+                         `username` varchar(50) not NULL COMMENT '管理员用户名',
                          `password` varchar(100) NOT NULL COMMENT '密码',
                          `real_name` varchar(50) NOT NULL COMMENT '真实姓名',
                          `status`  int default 1 not null comment '状态 0:禁用，1:启用',
@@ -87,7 +94,27 @@ CREATE TABLE `sys_log` (
 -- 新增执行时长字段
 ALTER TABLE sys_log ADD COLUMN `time` bigint(20) DEFAULT 0 COMMENT '执行时长(毫秒)';
 
+INSERT INTO `admin`
+(`id`, `username`, `password`, `real_name`, `status`, `email`, `phone`, `introduction`, `create_time`, `update_time`)
+VALUES
+    (1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'mjc', 1, '3378405015@qq.com', '19817193250', '这是一个大帅逼', '2025-12-16 14:37:04', '2025-12-21 03:08:59');
+
 -- 新增经纬度
-ALTER TABLE `attraction`
+ALTER TABLE `user`
     ADD COLUMN `longitude` decimal(10, 6) DEFAULT NULL COMMENT '经度',
     ADD COLUMN `latitude` decimal(10, 6) DEFAULT NULL COMMENT '纬度';
+
+-- 对普通用户插入ip字段以及所在城市字段
+ALTER TABLE `user`
+    ADD COLUMN `ip` varchar(64) DEFAULT NULL COMMENT '操作IP',
+    ADD COLUMN `city` varchar(50) DEFAULT NULL COMMENT '所在城市';
+
+-- 对普通用户插入注册时所在城市字段
+ALTER TABLE `user`
+    ADD COLUMN `register_city` varchar(50) DEFAULT NULL COMMENT '注册时所在城市';
+
+
+-- 对管理员也插入ip字段以及所在城市字段
+ALTER TABLE `admin`
+    ADD COLUMN `ip` varchar(64) DEFAULT NULL COMMENT '操作IP',
+    ADD COLUMN `city` varchar(50) DEFAULT NULL COMMENT '所在城市';

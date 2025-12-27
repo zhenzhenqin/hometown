@@ -5,6 +5,8 @@ import com.mjc.Result.Result;
 import com.mjc.annotation.AutoLog;
 import com.mjc.contant.JwtClaimsConstant;
 import com.mjc.dto.AdminDTO;
+import com.mjc.utils.IpUtil;
+import com.mjc.utils.LocationUtil;
 import com.mjc.vo.AdminListVO;
 import com.mjc.dto.AdminLoginDTO;
 import com.mjc.dto.AdminPasswordEditDTO;
@@ -15,6 +17,7 @@ import com.mjc.service.AdminService;
 import com.mjc.vo.AdminVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -46,10 +49,24 @@ public class AdminController {
     @AutoLog("管理员登录")
     @PostMapping("/login")
     @Operation(summary = "管理员登陆")
-    public Result<AdminVO> login(@RequestBody AdminLoginDTO adminLoginDTO){
+    public Result<AdminVO> login(@RequestBody AdminLoginDTO adminLoginDTO, HttpServletRequest request){
         log.info("登录管理员信息为:{}", adminLoginDTO);
 
         Admin admin = adminService.login(adminLoginDTO);
+
+        //获取客户端的ip地址
+        String clientIp = IpUtil.getIpAddr(request);
+
+        //获取当前ip的城市信息
+        String cityInfo = LocationUtil.getCityInfo(clientIp);
+
+        //将ip地址以及所在城市存入数据库
+        Admin admin1 = Admin.builder()
+                .id(admin.getId())
+                .ip(clientIp)
+                .city(cityInfo)
+                .build();
+        adminService.updateIpAndCity(admin1);
 
         //登录成功后 生成jwt令牌 存入管理员的id
         Map<String, Object> claims = new HashMap<>();
@@ -151,7 +168,6 @@ public class AdminController {
      * @param adminPasswordEditDTO 管理员id 旧密码 新密码
      * @return
      */
-    @AutoLog("编辑管理员密码")
     @PutMapping("/editPassword")
     @Operation(summary = "编辑管理员密码")
     public Result update(@RequestBody AdminPasswordEditDTO adminPasswordEditDTO){

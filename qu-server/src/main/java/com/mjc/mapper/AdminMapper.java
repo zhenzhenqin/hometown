@@ -65,4 +65,10 @@ public interface AdminMapper {
     @Insert("INSERT INTO admin (username, password, real_name, status, email, phone, introduction, create_time, update_time) " +
             "VALUES (#{username}, #{password}, #{realName}, #{status}, #{email}, #{phone}, #{introduction}, #{createTime}, #{updateTime})")
     void save(Admin admin);
+
+    /**
+     * 更新管理员ip地址以及城市
+     * @param admin
+     */
+    void updateIpAndCity(Admin admin);
 }

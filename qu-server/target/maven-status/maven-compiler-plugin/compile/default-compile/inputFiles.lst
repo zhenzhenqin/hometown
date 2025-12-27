@@ -29,6 +29,8 @@ D:\Code\Hometown\hometown\qu-server\src\main\java\com\mjc\service\LogService.jav
 D:\Code\Hometown\hometown\qu-server\src\main\java\com\mjc\config\CaptchaConfig.java
 D:\Code\Hometown\hometown\qu-server\src\main\java\com\mjc\controller\AdminController.java
 D:\Code\Hometown\hometown\qu-server\src\main\java\com\mjc\HometownApplication.java
+D:\Code\Hometown\hometown\qu-server\src\main\java\com\mjc\task\SyncDataTask.java
+D:\Code\Hometown\hometown\qu-server\src\main\java\com\mjc\controller\FileUploadController.java
 D:\Code\Hometown\hometown\qu-server\src\main\java\com\mjc\controller\ReportController.java
 D:\Code\Hometown\hometown\qu-server\src\main\java\com\mjc\config\WebMvcConfiguration.java
 D:\Code\Hometown\hometown\qu-server\src\main\java\com\mjc\controller\CultureController.java

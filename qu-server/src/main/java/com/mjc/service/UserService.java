@@ -71,4 +71,10 @@ public interface UserService {
      * @param userPasswordEditDTO
      */
     void userEditPassword(UserPasswordEditDTO userPasswordEditDTO);
+
+    /**
+     * 更新用户登录时的ip地址和城市信息
+     * @param user1
+     */
+    void updateIpAndCity(User user1);
 }

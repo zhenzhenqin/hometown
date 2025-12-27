@@ -12,13 +12,17 @@
             <if test="realName != null and realName !=''">real_name = #{realName},</if>
             <if test="status != null">status = #{status},</if>
             <if test="email != null">email = #{email},</if>
-            <if test="password != null">password = #{password},</if>
+            <if test="password != null and password != ''">password = #{password},</if>
             <if test="phone != null and phone !=''">phone = #{phone},</if>
             <if test="introduction != null and introduction !=''">introduction = #{introduction},</if>
+            <if test="registerCity != null and registerCity !=''">register_city = #{registerCity},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="ip != null and ip !=''">ip = #{ip},</if>
+            <if test="city != null and city !=''">city = #{city},</if>
         </set>
         where id = #{id}
     </update>
+
     <!--条件分页查询-->
     <select id="queryAllUser" resultType="com.mjc.entity.User">
         select * from user
@@ -33,8 +37,19 @@
                 and phone = #{phone}
             </if>
         </where>
-        order by update_time
+        order by create_time desc
     </select>
+
+    <!--更新用户登录时的ip地址和城市信息-->
+    <update id="updateIpAndCity">
+        update user
+        <set>
+            <if test="ip != null and ip !=''">ip = #{ip},</if>
+            <if test="city != null and city !=''">city = #{city},</if>
+            <if test="registerCity != null and registerCity !=''">register_city = #{registerCity},</if>
+        </set>
+        where id = #{id}
+    </update>
 
 </mapper>
 

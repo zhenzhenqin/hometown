@@ -9,9 +9,12 @@ import com.mjc.dto.UserRegisterDTO;
 import com.mjc.entity.User;
 import com.mjc.queryParam.UserQueryParam;
 import com.mjc.service.UserService;
+import com.mjc.utils.IpUtil;
+import com.mjc.utils.LocationUtil;
 import com.mjc.vo.UserLoginVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -34,10 +37,29 @@ public class UserController {
      */
     @Operation(summary = "用户登录接口")
     @PostMapping("login")
-    public Result<UserLoginVO> Login(@RequestBody UserLoginDTO userLoginDTO){
+    public Result<UserLoginVO> Login(@RequestBody UserLoginDTO userLoginDTO, HttpServletRequest request){
         log.info("登录的用户信息:{}", userLoginDTO);
 
         User user = userService.userLogin(userLoginDTO);
+
+        //获取用户登录时的ip地址
+        String ipAddr = IpUtil.getIpAddr(request);
+        log.info("用户登录时的ip地址为:{}", ipAddr);
+
+        //获取登录时所在城市
+        String cityInfo = LocationUtil.getCityInfo(ipAddr);
+        log.info("用户登录时所在城市为:{}", cityInfo);
+
+        //封装
+        User user1 = User.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .city(cityInfo)
+                .build();
+
+        //更新城市信息
+        userService.updateIpAndCity(user1);
 
         UserLoginVO userLoginVO = UserLoginVO.builder()
                 .id(String.valueOf(user.getId()))
@@ -55,10 +77,22 @@ public class UserController {
      */
     @Operation(summary = "用户注册接口")
     @PostMapping("/register")
-    public Result<UserLoginVO> register(@RequestBody UserRegisterDTO userRegisterDTO){
+    public Result<UserLoginVO> register(@RequestBody UserRegisterDTO userRegisterDTO, HttpServletRequest request){
         log.info("用户注册信息为:{}", userRegisterDTO);
 
         User user = userService.userRegister(userRegisterDTO);
+
+        //获取用户注册时的ip地址
+        String ipAddr = IpUtil.getIpAddr(request);
+        log.info("用户注册时的ip地址为:{}", ipAddr);
+
+        //获取注册时所在城市
+        String cityInfo = LocationUtil.getCityInfo(ipAddr);
+        log.info("用户注册时所在城市为:{}", cityInfo);
+
+        //将城市信息保存到用户表中
+        user.setRegisterCity(cityInfo);
+        userService.updateIpAndCity(user);
 
         //回传注册信息用于登录
         UserLoginVO userLoginVO = UserLoginVO.builder()

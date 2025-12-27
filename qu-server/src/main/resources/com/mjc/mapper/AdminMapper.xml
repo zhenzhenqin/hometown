@@ -29,5 +29,14 @@
         </where>
     </select>
 
+    <!--更新管理员ip地址以及城市-->
+    <update id="updateIpAndCity">
+        update admin
+        <set>
+            <if test="ip != null">ip = #{ip},</if>
+            <if test="city != null">city = #{city},</if>
+        </set>
+        where id = #{id}
+    </update>
 </mapper>
 

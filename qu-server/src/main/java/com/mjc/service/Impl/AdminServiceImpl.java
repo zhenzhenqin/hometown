@@ -227,4 +227,13 @@ public class AdminServiceImpl implements AdminService {
 
         adminMapper.save(admin);
     }
+
+    /**
+     * 更新管理员ip地址以及城市
+     * @param admin
+     */
+    @Override
+    public void updateIpAndCity(Admin admin) {
+        adminMapper.updateIpAndCity(admin);
+    }
 }

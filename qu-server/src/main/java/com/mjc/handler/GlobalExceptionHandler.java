@@ -42,6 +42,12 @@ public class GlobalExceptionHandler {
         return Result.error(e.getMessage());
     }
 
+    // 捕获手机号已存在异常
+    @ExceptionHandler(PhoneExistException.class)
+    public Result<?> handlePhoneExistException(PhoneExistException e){
+        return Result.error(e.getMessage());
+    }
+
     // 捕获其他所有异常
     @ExceptionHandler(Exception.class)
     public Result<?> handleGlobalException(Exception e) {

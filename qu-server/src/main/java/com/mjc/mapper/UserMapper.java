@@ -7,6 +7,7 @@ import com.mjc.queryParam.UserQueryParam;
 import com.mjc.vo.ChartDataVO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -64,6 +65,7 @@ public interface UserMapper {
      */
     @AutoFill(OperationType.INSERT)
     @Insert("insert into user (username, password, phone, status) values (#{username}, #{password}, #{phone}, #{status})")
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id") // 开启自动生成主键，将生成的主键值设置到user对象的id属性中
     void registerUser(User user);
 
     /**
@@ -86,4 +88,10 @@ public interface UserMapper {
      */
     @Select("select case when status = 1 then '正常用户' else '被拉黑/禁用' end as name, count(id) as value from user group by status")
     List<ChartDataVO> getUserStatusDistribution();
+
+     /**
+      * 更新用户登录时的ip地址和城市信息
+      * @param user1
+      */
+     void updateIpAndCity(User user1);
 }

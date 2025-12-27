@@ -34,7 +34,9 @@ com\mjc\controller\CultureController.class
 com\mjc\service\CultureService.class
 com\mjc\service\UserService.class
 com\mjc\controller\AdminController.class
+com\mjc\controller\FileUploadController.class
 com\mjc\mapper\AttractionMapper.class
 com\mjc\service\Impl\AdminServiceImpl.class
 com\mjc\controller\UploadController.class
 com\mjc\mapper\AdminMapper.class
+com\mjc\task\SyncDataTask.class

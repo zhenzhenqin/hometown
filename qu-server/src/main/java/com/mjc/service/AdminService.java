@@ -69,4 +69,10 @@ public interface AdminService {
      * @param adminDTO
      */
     void save(AdminDTO adminDTO);
+
+     /**
+     * 更新管理员ip地址以及城市
+     * @param admin1
+     */
+    void updateIpAndCity(Admin admin1);
 }

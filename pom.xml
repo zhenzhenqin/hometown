@@ -34,8 +34,12 @@
         <jaxb.version>2.3.3</jaxb.version>
         <mysql.version>8.0.33</mysql.version>
         <lombok.version>1.18.30</lombok.version>
+        <fastjson2.version>2.0.45</fastjson2.version>
         <aspectj.version>1.9.7</aspectj.version>
         <oshi.version>6.4.4</oshi.version>
+        <okhttp.version>4.12.0</okhttp.version>
+        <ip2region.version>2.7.0</ip2region.version>
+        <commons-io.version>2.11.0</commons-io.version>
         <aliyun-sdk-oss.version>3.17.4</aliyun-sdk-oss.version>
     </properties>
 
@@ -157,6 +161,32 @@
                 <groupId>com.github.oshi</groupId>
                 <artifactId>oshi-core</artifactId>
                 <version>${oshi.version}</version>
+            </dependency>
+
+            <!-- pom.xml 依赖配置 -->
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>${okhttp.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.fastjson2</groupId>
+                <artifactId>fastjson2</artifactId>
+                <version>${fastjson2.version}</version>
+            </dependency>
+
+            <!-- ip2region 依赖 用于获取客户端的ip地址所在城市 -->
+            <dependency>
+                <groupId>org.lionsoul</groupId>
+                <artifactId>ip2region</artifactId>
+                <version>${ip2region.version}</version>
+            </dependency>
+
+            <!-- commons-io 依赖 用于将输入流转换为字节数组 -->
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -22,6 +22,11 @@ public class User {
     private String email; // 邮箱
     private String phone; // 手机号
     private String introduction; // 个性签名
+    private Double longitude; // 经度
+    private Double latitude;  // 纬度
+    private String ip; // 操作IP
+    private String city; // 所在城市
+    private String registerCity; // 注册时所在城市
     private LocalDateTime createTime; // 创建时间
     private LocalDateTime updateTime; // 更新时间
 }

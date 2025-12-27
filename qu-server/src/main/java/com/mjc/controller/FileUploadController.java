@@ -29,7 +29,7 @@ public class FileUploadController {
     @Value("${hometown.file.access-path}")
     private String accessPath;
 
-    @PostMapping("/upload")
+    //@PostMapping("/upload")
     @Operation(summary = "上传文件(本地存储)")
     public Result<String> upload(MultipartFile file, HttpServletRequest request) {
         log.info("文件上传开始：{}", file.getOriginalFilename());

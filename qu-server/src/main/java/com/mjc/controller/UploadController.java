@@ -20,7 +20,7 @@ public class UploadController {
     @Autowired
     private AliyunOSSOperator aliyunOSSOperator;
 
-    //@PostMapping("/upload")
+    @PostMapping("/upload")
     @Operation(summary = "上传文件")
     public Result upload(MultipartFile file) throws Exception {
         log.info("上传文件：{}", file);

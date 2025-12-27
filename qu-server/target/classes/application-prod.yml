@@ -1,0 +1,19 @@
+#数据库配置
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/hometown_db
+    username: hometown
+    password: hometown
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      password: hometown  #服务器密码
+      lettuce:
+        pool:
+          max-active: 10
+          max-idle: 10
+          min-idle: 1
+        time-between-eviction-runs: 10s
+    database: 6
