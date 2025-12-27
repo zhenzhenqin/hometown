@@ -1,0 +1,17 @@
+﻿target/
+**/target/
+*.class
+*.jar
+*.war
+*.lst
+.idea/
+*.iml
+.vscode/
+*.log
+application.yml
+application-dev.yml
+application-prod.yml
+**/src/main/resources/application.yml
+**/src/main/resources/application-dev.yml
+**/src/main/resources/application-prod.yml
+**/target/classes/application.yml
