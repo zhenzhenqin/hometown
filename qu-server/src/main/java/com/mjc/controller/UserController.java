@@ -44,17 +44,22 @@ public class UserController {
 
         //获取用户登录时的ip地址
         String ipAddr = IpUtil.getIpAddr(request);
-        log.info("用户登录时的ip地址为:{}", ipAddr);
+        if (ipAddr == null || ipAddr.isEmpty()) {
+            ipAddr = "未知";
+        }
 
         //获取登录时所在城市
         String cityInfo = LocationUtil.getCityInfo(ipAddr);
-        log.info("用户登录时所在城市为:{}", cityInfo);
+        if (cityInfo == null || cityInfo.isEmpty()) {
+            cityInfo = "未知";
+        }
 
         //封装
         User user1 = User.builder()
                 .id(user.getId())
                 .username(user.getUsername())
                 .password(user.getPassword())
+                .ip(ipAddr)
                 .city(cityInfo)
                 .build();
 
@@ -84,14 +89,21 @@ public class UserController {
 
         //获取用户注册时的ip地址
         String ipAddr = IpUtil.getIpAddr(request);
-        log.info("用户注册时的ip地址为:{}", ipAddr);
+        if (ipAddr == null || ipAddr.isEmpty()) {
+            ipAddr = "未知";
+        }
 
         //获取注册时所在城市
         String cityInfo = LocationUtil.getCityInfo(ipAddr);
-        log.info("用户注册时所在城市为:{}", cityInfo);
+        if (cityInfo == null || cityInfo.isEmpty()) {
+            cityInfo = "未知";
+        }
 
         //将城市信息保存到用户表中
+        user.setIp(ipAddr);
         user.setRegisterCity(cityInfo);
+        user.setCity(cityInfo);
+
         userService.updateIpAndCity(user);
 
         //回传注册信息用于登录

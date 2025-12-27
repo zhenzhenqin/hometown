@@ -7,9 +7,6 @@ import org.springframework.core.io.ClassPathResource;
 
 import java.io.InputStream;
 
-/**
- * IP属地获取工具类 (基于 Ip2Region)
- */
 @Slf4j
 public class LocationUtil {
 
@@ -17,14 +14,9 @@ public class LocationUtil {
 
     static {
         try {
-            // 1. 从 classpath 读取 ip2region.xdb 文件
             ClassPathResource resource = new ClassPathResource("ip2region.xdb");
             InputStream inputStream = resource.getInputStream();
-            
-            // 2. 将流转为 byte 数组 (加载到内存，提高查询速度)
             byte[] cBuff = IOUtils.toByteArray(inputStream);
-            
-            // 3. 创建 searcher 对象
             searcher = Searcher.newWithBuffer(cBuff);
             log.info("Ip2Region 离线库加载成功");
         } catch (Exception e) {
@@ -32,54 +24,51 @@ public class LocationUtil {
         }
     }
 
-    /**
-     * 根据IP获取属地
-     * @param ip ip地址
-     * @return String 例如：浙江省 杭州市
-     */
     public static String getCityInfo(String ip) {
         if (searcher == null || ip == null || ip.isEmpty()) {
             return "未知";
         }
-        
-        // 内网IP特殊处理
         if ("127.0.0.1".equals(ip) || "localhost".equals(ip)) {
             return "内网IP";
         }
 
         try {
-            // 4. 查询并获取结果
-            // 返回格式固定为：国家|区域|省份|城市|ISP
-            // 例如：中国|0|浙江省|杭州市|电信
             String region = searcher.search(ip);
-            
-            if (region == null) {
-                return "未知";
-            }
+            // 格式：国家|区域|省份|城市|ISP
+            if (region == null) return "未知";
 
-            // 5. 解析字符串
             String[] parts = region.split("\\|");
-            // parts[2] 是省份，parts[3] 是城市
-            String province = parts[2];
-            String city = parts[3];
 
-            // 处理 "0" 的情况 (有时候查不到省份会显示0)
+            if (parts.length < 4) return "未知";
+
+            String province = parts[1]; // 省份 (浙江省)
+            String city = parts[2];     // 城市 (宁波市)
+
+            // 处理 "0"
             if ("0".equals(province)) province = "";
             if ("0".equals(city)) city = "";
 
+            // 简化名称
             String shortProvince = simplifyArea(province);
             String shortCity = simplifyArea(city);
 
-            // 2. 特殊处理直辖市 (上海市|上海市 -> 上海)
-            if (shortProvince.equals(shortCity)) {
-                return shortProvince;
+            // 1. 如果省份为空，尝试返回城市
+            if (shortProvince.isEmpty()) {
+                return shortCity.isEmpty() ? "未知" : shortCity;
             }
 
-            // 3. 拼接结果 (如果有城市名则拼接，没有则只返回省份)
+            // 2. 如果城市为空，返回省份
             if (shortCity.isEmpty()) {
                 return shortProvince;
             }
 
+            // 3. 处理直辖市 (上海·上海 -> 上海)
+            // 或者 省市同名 (吉林省·吉林市 -> 吉林)
+            if (shortProvince.equals(shortCity)) {
+                return shortProvince;
+            }
+
+            // 4. 标准返回：浙江·宁波
             return shortProvince + "·" + shortCity;
 
         } catch (Exception e) {
@@ -89,7 +78,8 @@ public class LocationUtil {
     }
 
     /**
-     * 辅助方法：简化地名 (去除行政单位后缀)
+     * 辅助方法：简化地名
+     * 增加了对 "自治州"、"地区" 等后缀的处理，防止名字过长
      */
     private static String simplifyArea(String name) {
         if (name == null) return "";
@@ -98,8 +88,14 @@ public class LocationUtil {
                 .replace("市", "")
                 .replace("自治区", "")
                 .replace("特别行政区", "")
+                .replace("自治州", "")
+                .replace("地区", "")
+                .replace("盟", "")
                 .replace("壮族", "")
                 .replace("回族", "")
-                .replace("维吾尔", "");
+                .replace("维吾尔", "")
+                .replace("土家族", "")
+                .replace("苗族", "")
+                .replace("藏族", "");
     }
 }

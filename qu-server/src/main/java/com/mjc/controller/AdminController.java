@@ -57,6 +57,9 @@ public class AdminController {
         //获取客户端的ip地址
         String clientIp = IpUtil.getIpAddr(request);
 
+        //String clientIp = "115.236.101.5";
+
+
         //获取当前ip的城市信息
         String cityInfo = LocationUtil.getCityInfo(clientIp);
 
