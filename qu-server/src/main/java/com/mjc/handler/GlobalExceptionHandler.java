@@ -48,6 +48,47 @@ public class GlobalExceptionHandler {
         return Result.error(e.getMessage());
     }
 
+    // 捕获邮箱已存在异常
+    @ExceptionHandler(EmailExistException.class)
+    public Result<?> handleEmailExistException(EmailExistException e) {
+        return Result.error(e.getMessage());
+    }
+
+    // 捕获ip被禁用异常
+    @ExceptionHandler(AccountDisabledException.class)
+    public Result<?> handleAccountDisabledException(AccountDisabledException e){
+        return Result.error(e.getMessage());
+    }
+
+    // 捕获数据库唯一约束异常
+    @ExceptionHandler(org.springframework.dao.DuplicateKeyException.class)
+    public Result<?> handleDuplicateKeyException(org.springframework.dao.DuplicateKeyException e) {
+        // 检查异常消息以确定具体约束
+        String message = e.getMessage();
+        if (message.contains("admin_email_unique")) {
+            return Result.error("邮箱已被使用，请更换邮箱地址");
+        } else if (message.contains("admin_username_unique")) {
+            return Result.error("用户名已被使用，请更换用户名");
+        } else if (message.contains("phone")) {
+            return Result.error("手机号已被使用，请更换手机号");
+        }
+        return Result.error("数据重复，请检查输入信息");
+    }
+
+    // 捕获 SQL 约束异常
+    @ExceptionHandler(java.sql.SQLIntegrityConstraintViolationException.class)
+    public Result<?> handleSQLIntegrityConstraintViolationException(java.sql.SQLIntegrityConstraintViolationException e) {
+        String message = e.getMessage();
+        if (message.contains("admin_email_unique")) {
+            return Result.error("邮箱已被使用，请更换邮箱地址");
+        } else if (message.contains("admin_username_unique")) {
+            return Result.error("用户名已被使用，请更换用户名");
+        } else if (message.contains("phone")) {
+            return Result.error("手机号已被使用，请更换手机号");
+        }
+        return Result.error("数据约束冲突，请检查输入信息");
+    }
+
     // 捕获其他所有异常
     @ExceptionHandler(Exception.class)
     public Result<?> handleGlobalException(Exception e) {

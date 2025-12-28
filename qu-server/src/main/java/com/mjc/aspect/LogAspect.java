@@ -50,15 +50,16 @@ public class LogAspect {
     @Around("@annotation(autoLog)")
     public Object around(ProceedingJoinPoint point, AutoLog autoLog) throws Throwable {
         // 1. 记录开始时间
-        long beginTime = System.currentTimeMillis();
+        long beginTime = System.nanoTime();
 
-        // 2. 执行目标方法 (真正的业务逻辑)
+        // 2. 执行目标方法
         Object result = point.proceed();
 
         // 3. 计算耗时
-        long time = System.currentTimeMillis() - beginTime;
+        long timeNanos = System.nanoTime() - beginTime;
+        double time = timeNanos / 1_000_000.0;
 
-        // 4. 保存日志 (建议异步保存，防止影响业务性能，这里演示同步保存)
+        // 4. 保存日志
         try {
             saveSysLog(point, autoLog, time);
         } catch (Exception e) {
@@ -72,7 +73,7 @@ public class LogAspect {
     /**
      * 构建并保存日志实体
      */
-    private void saveSysLog(ProceedingJoinPoint point, AutoLog autoLog, long time) {
+    private void saveSysLog(ProceedingJoinPoint point, AutoLog autoLog, double time) {
         MethodSignature signature = (MethodSignature) point.getSignature();
         Method method = signature.getMethod();
 

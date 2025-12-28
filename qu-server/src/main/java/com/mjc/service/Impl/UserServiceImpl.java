@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public User userLogin(UserLoginDTO userLoginDTO) {
+    public User userLogin(UserLoginDTO userLoginDTO, String ip) {
         String uuid = userLoginDTO.getUuid();
         String code = userLoginDTO.getCode();
         // 构造 Redis Key
@@ -104,6 +104,17 @@ public class UserServiceImpl implements UserService {
 
         if (user == null) {
             throw new AccountNotFoundException(MessageConstant.ACCOUNT_NOT_FOUND);
+        }
+
+        //判断该ip是否被禁用
+        //根据ip去数据库查询 将该ip所有用户查出来
+        List<User> users = userMapper.getUserByIp(ip);
+
+        //遍历用户 如果该ip下有人被禁用 则不允许登录
+        for (User user1 : users){
+            if (user1.getStatus() == StatusConstant.DISABLE){
+                throw new AccountDisabledException(MessageConstant.ACCOUNT_DISABLED);
+            }
         }
 
         //拿到数据库中密码进行比对
@@ -129,7 +140,7 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public User userRegister(UserRegisterDTO userRegisterDTO) {
+    public User userRegister(UserRegisterDTO userRegisterDTO, String ipAddr) {
         String uuid = userRegisterDTO.getUuid();
         String code = userRegisterDTO.getCode();
         // 构造 Redis Key
@@ -143,6 +154,18 @@ public class UserServiceImpl implements UserService {
         }
         // 校验通过后，删除 Redis 中的 Key，防止重复使用
         stringRedisTemplate.delete(verifyKey);
+
+        //防小人开始
+        //判断是否未可疑ip
+        //根据ip去数据库查询 将该ip所有用户查出来
+        List<User> userList = userMapper.getUserByIp(ipAddr);
+
+        //遍历用户 如果该ip下有人被禁用 则不允许注册
+        for (User user1 : userList){
+            if (user1.getStatus() == StatusConstant.DISABLE){
+                throw new AccountDisabledException(MessageConstant.ACCOUNT_DISABLED_REGISTER);
+            }
+        }
 
         //先判断数据库中有无该手机号， 有的化则抛出异常
         String phone = userRegisterDTO.getPhone();

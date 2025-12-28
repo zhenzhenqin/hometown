@@ -40,13 +40,14 @@ public class UserController {
     public Result<UserLoginVO> Login(@RequestBody UserLoginDTO userLoginDTO, HttpServletRequest request){
         log.info("登录的用户信息:{}", userLoginDTO);
 
-        User user = userService.userLogin(userLoginDTO);
-
         //获取用户登录时的ip地址
         String ipAddr = IpUtil.getIpAddr(request);
         if (ipAddr == null || ipAddr.isEmpty()) {
             ipAddr = "未知";
         }
+
+        User user = userService.userLogin(userLoginDTO, ipAddr);
+
 
         //获取登录时所在城市
         String cityInfo = LocationUtil.getCityInfo(ipAddr);
@@ -85,13 +86,14 @@ public class UserController {
     public Result<UserLoginVO> register(@RequestBody UserRegisterDTO userRegisterDTO, HttpServletRequest request){
         log.info("用户注册信息为:{}", userRegisterDTO);
 
-        User user = userService.userRegister(userRegisterDTO);
-
         //获取用户注册时的ip地址
         String ipAddr = IpUtil.getIpAddr(request);
         if (ipAddr == null || ipAddr.isEmpty()) {
             ipAddr = "未知";
         }
+
+        User user = userService.userRegister(userRegisterDTO, ipAddr);
+
 
         //获取注册时所在城市
         String cityInfo = LocationUtil.getCityInfo(ipAddr);

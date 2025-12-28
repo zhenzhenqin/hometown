@@ -71,4 +71,12 @@ public interface AdminMapper {
      * @param admin
      */
     void updateIpAndCity(Admin admin);
+
+    /**
+     * 根据邮箱查询管理员
+     * @param email
+     * @return
+     */
+    @Select("select * from admin where email = #{email}")
+    Admin getByEmail(String email);
 }

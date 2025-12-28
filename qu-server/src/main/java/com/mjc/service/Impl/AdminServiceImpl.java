@@ -7,7 +7,7 @@ import com.mjc.contant.MessageConstant;
 import com.mjc.contant.PasswordConstant;
 import com.mjc.contant.StatusConstant;
 import com.mjc.dto.AdminDTO;
-import com.mjc.exception.CaptchaException;
+import com.mjc.exception.*;
 import com.mjc.vo.AdminListVO;
 import com.mjc.dto.AdminLoginDTO;
 import com.mjc.dto.AdminPasswordEditDTO;
@@ -16,9 +16,6 @@ import com.mjc.mapper.AdminMapper;
 import com.mjc.queryParam.AdminQueryParam;
 import com.mjc.service.AdminService;
 import com.mjc.context.BaseContext;
-import com.mjc.exception.AccountLockedException;
-import com.mjc.exception.AccountNotFoundException;
-import com.mjc.exception.PasswordErrorException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,6 +125,14 @@ public class AdminServiceImpl implements AdminService {
      */
     @Override
     public void updateAdmin(Admin admin) {
+        // 检查邮箱是否已被其他管理员使用
+        if (admin.getEmail() != null && !admin.getEmail().isEmpty()) {
+            Admin existingAdmin = adminMapper.getByEmail(admin.getEmail());
+            if (existingAdmin != null && !existingAdmin.getId().equals(admin.getId())) {
+                throw new EmailExistException("邮箱已被使用，请更换邮箱地址");
+            }
+        }
+
         admin.setUpdateTime(LocalDateTime.now());
         adminMapper.updateAdmin(admin);
     }

@@ -43,14 +43,14 @@ public interface UserService {
      * @param userLoginDTO
      * @return
      */
-    User userLogin(UserLoginDTO userLoginDTO);
+    User userLogin(UserLoginDTO userLoginDTO, String ip);
 
     /**
      * 用户注册接口
      * @param userRegisterDTO
      * @return
      */
-    User userRegister(UserRegisterDTO userRegisterDTO);
+    User userRegister(UserRegisterDTO userRegisterDTO, String ipAddr);
 
     /**
      * 条件分页查询所有用户

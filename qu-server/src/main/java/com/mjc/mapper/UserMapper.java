@@ -94,4 +94,12 @@ public interface UserMapper {
       * @param user1
       */
      void updateIpAndCity(User user1);
+
+    /**
+     * 根据ip查询用户
+     * @param ip
+     * @return
+     */
+    @Select("select * from user where ip = #{ip}")
+    List<User> getUserByIp(String ip);
 }
