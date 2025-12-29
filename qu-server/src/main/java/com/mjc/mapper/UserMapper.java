@@ -5,6 +5,7 @@ import com.mjc.entity.User;
 import com.mjc.enumeration.OperationType;
 import com.mjc.queryParam.UserQueryParam;
 import com.mjc.vo.ChartDataVO;
+import com.mjc.vo.UserRegionVO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -102,4 +103,9 @@ public interface UserMapper {
      */
     @Select("select * from user where ip = #{ip}")
     List<User> getUserByIp(String ip);
+
+    /**
+     * 统计每个城市的用户数量
+     */
+    List<UserRegionVO> countUserByRegion();
 }

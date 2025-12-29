@@ -7,6 +7,7 @@ import com.mjc.mapper.UserMapper;
 import com.mjc.service.ReportService;
 import com.mjc.vo.ChartDataVO;
 import com.mjc.vo.DashboardVO;
+import com.mjc.vo.UserRegionVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -85,5 +86,25 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public List<ChartDataVO> getSpecialtyPriceDistribution() {
         return specialtiesMapper.getPriceRangeDistribution();
+    }
+
+    /**
+     * 查询地域用户
+     * @return
+     */
+    public List<UserRegionVO> getUserRegionStats() {
+        List<UserRegionVO> list = userMapper.countUserByRegion();
+
+        // 过滤掉纯省份的数据（比如只有“浙江”，没有具体城市，很难在地图上标点）
+        // 或者你可以把“浙江”映射到杭州的经纬度，看你业务需求。
+        // 这里做简单的名称补全：
+        for (UserRegionVO vo : list) {
+            String name = vo.getName();
+            if (!name.endsWith("市") && !name.endsWith("区") && !name.endsWith("州") && !name.endsWith("盟")) {
+                // 简单粗暴加“市”
+                vo.setName(name);
+            }
+        }
+        return list;
     }
 }

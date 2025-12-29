@@ -6,6 +6,7 @@ import com.mjc.annotation.AutoLog;
 import com.mjc.service.ReportService;
 import com.mjc.vo.ChartDataVO;
 import com.mjc.vo.DashboardVO;
+import com.mjc.vo.UserRegionVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -80,4 +81,15 @@ public class ReportController {
         return Result.success(reportService.getSpecialtyPriceDistribution());
     }
 
+    /**
+     * 获取用户地域分布数据
+     * 返回格式示例: [{name: '杭州市', value: 120}, {name: '宁波市', value: 85}]
+     */
+    @GetMapping("/userRegion")
+    @Operation(summary = "统计用户地区分布")
+    public Result<List<UserRegionVO>> getUserRegionStats() {
+        log.info("开始统计用户地域分布...");
+        List<UserRegionVO> list = reportService.getUserRegionStats();
+        return Result.success(list);
+    }
 }

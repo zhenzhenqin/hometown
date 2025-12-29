@@ -51,5 +51,17 @@
         where id = #{id}
     </update>
 
+    <!--统计每一个地域的人数并进行数据清理-->
+    <select id="countUserByRegion" resultType="com.mjc.vo.UserRegionVO">
+        SELECT
+            SUBSTRING_INDEX(city, '·', -1) AS name,
+            COUNT(*) AS value
+        FROM user
+        WHERE city IS NOT NULL
+          AND city != ''
+          AND city != '未知'
+        GROUP BY SUBSTRING_INDEX(city, '·', -1)
+        ORDER BY value DESC
+    </select>
 </mapper>
 

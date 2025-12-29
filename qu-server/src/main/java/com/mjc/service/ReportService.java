@@ -2,6 +2,7 @@ package com.mjc.service;
 
 import com.mjc.vo.ChartDataVO;
 import com.mjc.vo.DashboardVO;
+import com.mjc.vo.UserRegionVO;
 
 import java.util.List;
 
@@ -36,4 +37,9 @@ public interface ReportService {
      * @return
      */
     List<ChartDataVO> getSpecialtyPriceDistribution();
+
+    /**
+     * 获取用户地域分布数据
+     */
+    List<UserRegionVO> getUserRegionStats();
 }

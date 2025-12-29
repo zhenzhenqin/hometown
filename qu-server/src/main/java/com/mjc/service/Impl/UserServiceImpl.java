@@ -13,6 +13,7 @@ import com.mjc.exception.*;
 import com.mjc.mapper.UserMapper;
 import com.mjc.queryParam.UserQueryParam;
 import com.mjc.service.UserService;
+import com.mjc.vo.UserRegionVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
