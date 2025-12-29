@@ -16,4 +16,10 @@ public class RedisConstants {
 
     //景区差评key
     public static final String ATTRACTION_DISLIKED_KEY = "attraction:disliked:";
+
+    //redis uv前缀
+    public static final String UV_KEY_PREFIX = "visit:uv:";
+
+    //redis pv前缀
+    public static final String PV_KEY_PREFIX = "visit:pv:";
 }

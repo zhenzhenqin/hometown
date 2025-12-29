@@ -27,7 +27,7 @@ public interface AttractionMapper {
      * @param attraction
      */
     @AutoFill(value = OperationType.INSERT)
-    @Insert("insert into attraction(name, location, description,score, create_time, update_time) values(#{name}, #{location}, #{description}, #{score}, #{createTime}, #{updateTime})")
+    @Insert("insert into attraction(name, location, image, longitude, latitude, description, score, create_time, update_time) values(#{name}, #{location}, #{image}, #{longitude}, #{latitude}, #{description}, #{score}, #{createTime}, #{updateTime})")
     void addAttraction(Attraction attraction);
 
     /**

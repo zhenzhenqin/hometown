@@ -118,3 +118,15 @@ ALTER TABLE `user`
 ALTER TABLE `admin`
     ADD COLUMN `ip` varchar(64) DEFAULT NULL COMMENT '操作IP',
     ADD COLUMN `city` varchar(50) DEFAULT NULL COMMENT '所在城市';
+
+
+-- 12.30
+CREATE TABLE `sys_daily_visit` (
+                                   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+                                   `date` date NOT NULL COMMENT '统计日期',
+                                   `pv_count` int DEFAULT 0 COMMENT '每日浏览量(PV)',
+                                   `uv_count` int DEFAULT 0 COMMENT '每日独立访客数(UV)',
+                                   `create_time` datetime DEFAULT NULL COMMENT '记录创建时间',
+                                   PRIMARY KEY (`id`),
+                                   UNIQUE KEY `uk_date` (`date`) USING BTREE COMMENT '日期唯一索引，保证每天只有一条记录'
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='网站每日访问统计表';

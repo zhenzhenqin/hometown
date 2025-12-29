@@ -1,6 +1,7 @@
 package com.mjc.config;
 
 import com.mjc.interceptor.JwtTokenAdminInterceptor;
+import com.mjc.interceptor.VisitInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,9 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     @Autowired
     private JwtTokenAdminInterceptor jwtTokenAdminInterceptor;
 
+    @Autowired
+    private VisitInterceptor visitInterceptor;
+
     // 读取配置文件中的硬盘路径
     @Value("${hometown.file.upload-path}")
     private String uploadPath;
@@ -35,6 +39,17 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         log.info("开始注册自定义拦截器...");
+
+        registry.addInterceptor(visitInterceptor)
+                .addPathPatterns("/dailyVisit/ping")
+                .excludePathPatterns(
+                        "/doc.html",
+                        "/webjars/**",
+                        "/swagger-resources/**",
+                        "/v3/api-docs/**",
+                        "/images/**"
+                );
+
         registry.addInterceptor(jwtTokenAdminInterceptor)
                 .addPathPatterns("/**")  // 1. 拦截所有请求
                 .excludePathPatterns(    // 2. 排除不需要登录的接口
@@ -54,7 +69,8 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                         "/attractions/dislikes/{id}",
                         "/upload",
                         "/user/update",
-                        "/images/**"
+                        "/images/**",
+                        "/dailyVisit/**"
                 );
     }
 
