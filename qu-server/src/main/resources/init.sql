@@ -130,3 +130,22 @@ CREATE TABLE `sys_daily_visit` (
                                    PRIMARY KEY (`id`),
                                    UNIQUE KEY `uk_date` (`date`) USING BTREE COMMENT '日期唯一索引，保证每天只有一条记录'
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='网站每日访问统计表';
+
+
+-- 12.30 开始更新写文章相关内容
+
+-- 1. 文章/公告表 (存储 Markdown 内容)
+CREATE TABLE `sys_article` (
+                               `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '文章ID',
+                               `admin_id` int(11) NOT NULL COMMENT '发布管理员ID',
+                               `title` varchar(200) NOT NULL COMMENT '文章标题',
+                               `summary` varchar(500) DEFAULT NULL COMMENT '文章摘要(可选)',
+                               `content_md` longtext NOT NULL COMMENT 'Markdown原始内容',
+                               `cover_img` varchar(255) DEFAULT NULL COMMENT '封面图片URL',
+                               `view_count` int(11) DEFAULT 0 COMMENT '阅读量',
+                               `like_count` int(11) DEFAULT 0 COMMENT '点赞量',
+                               `is_public` int(1) DEFAULT 1 COMMENT '是否公开 0:私密 1:公开',
+                               `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '发布时间',
+                               `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                               PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统文章/公告表';

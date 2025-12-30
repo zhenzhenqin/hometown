@@ -75,4 +75,10 @@ public interface AdminService {
      * @param admin1
      */
     void updateIpAndCity(Admin admin1);
+
+    /**
+     * 查询所有管理员
+     * @return
+     */
+    List<Admin> getAllAdmins();
 }

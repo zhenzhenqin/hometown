@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mjc.mapper.ArticleMapper">
+
+    <insert id="insertArticle" parameterType="com.mjc.entity.Article" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sys_article (admin_id, title, summary, content_md, cover_img, is_public, create_time, update_time)
+        VALUES (#{adminId}, #{title}, #{summary}, #{contentMd}, #{coverImg}, #{isPublic}, #{createTime}, #{updateTime})
+    </insert>
+
+    <!--分页参数查询文章-->
+    <select id="getArticleLists" resultType="com.mjc.entity.Article">
+        SELECT
+        t1.id,
+        t1.title,
+        t1.summary,
+        t1.cover_img,
+        t1.view_count,
+        t1.like_count,
+        t1.create_time,
+        t1.admin_id,            -- 把 admin_id 也查出来
+        t2.real_name as authorName -- 建议关联查出作者名字，方便前端展示
+        FROM sys_article t1
+        LEFT JOIN admin t2 ON t1.admin_id = t2.id  -- 关联 admin 表
+        <where>
+            <if test="title != null and title != ''">
+                AND t1.title LIKE concat('%',#{title},'%')
+            </if>
+
+            <if test="adminId != null">
+                AND t1.admin_id = #{adminId}
+            </if>
+
+            AND t1.is_public = 1
+        </where>
+        ORDER BY t1.create_time DESC
+    </select>
+
+    <select id="getById" resultType="com.mjc.entity.Article">
+        SELECT * FROM sys_article WHERE id = #{id}
+    </select>
+
+    <update id="updateArticle" parameterType="com.mjc.entity.Article">
+        UPDATE sys_article
+        <set>
+            <if test="title != null">title = #{title},</if>
+            <if test="contentMd != null">content_md = #{contentMd},</if>
+            <if test="summary != null">summary = #{summary},</if>
+            <if test="coverImg != null">cover_img = #{coverImg},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteArticle">
+        DELETE FROM sys_article WHERE id IN
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

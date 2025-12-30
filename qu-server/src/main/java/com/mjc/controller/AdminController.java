@@ -190,4 +190,12 @@ public class AdminController {
         List<Admin> adminList = adminService.findAdminList();
         return Result.success(adminList);
     }
+
+    @GetMapping("/simple-list")
+    @Operation(summary = "获取管理员简易列表(用于下拉框)")
+    public Result<List<Admin>> getSimpleList() {
+        // 调用 Service 获取所有管理员
+        List<Admin> list = adminService.getAllAdmins();
+        return Result.success(list);
+    }
 }

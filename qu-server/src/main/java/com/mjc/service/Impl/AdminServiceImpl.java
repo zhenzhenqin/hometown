@@ -241,4 +241,13 @@ public class AdminServiceImpl implements AdminService {
     public void updateIpAndCity(Admin admin) {
         adminMapper.updateIpAndCity(admin);
     }
+
+    /**
+     * 查询所有管理员
+     * @return 管理员列表
+     */
+    @Override
+    public List<Admin> getAllAdmins() {
+        return adminMapper.findAllAdmin();
+    }
 }

@@ -101,8 +101,12 @@ public class ReportServiceImpl implements ReportService {
         for (UserRegionVO vo : list) {
             String name = vo.getName();
             if (!name.endsWith("市") && !name.endsWith("区") && !name.endsWith("州") && !name.endsWith("盟")) {
-                // 简单粗暴加“市”
-                vo.setName(name);
+                // 这里你之前写漏了 + "市"
+                vo.setName(name + "市");
+            }
+            // 针对 杭州、温州 这种以“州”结尾但需要加“市”的情况进行特判
+            else if (name.endsWith("州") && !name.contains("自治州")) {
+                vo.setName(name + "市");
             }
         }
         return list;
