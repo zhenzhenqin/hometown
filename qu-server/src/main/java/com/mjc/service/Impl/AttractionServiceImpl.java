@@ -1,5 +1,6 @@
 package com.mjc.service.Impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.mjc.Result.PageResult;
 import cn.hutool.json.JSONUtil;
 import com.github.pagehelper.Page;
@@ -18,6 +19,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static com.mjc.contant.RedisConstants.ATTRACTION_QUERY_KEY;
 
@@ -104,14 +106,28 @@ public class AttractionServiceImpl implements AttractionService {
         String keyId = key + id;
 
         //先根据缓存查询
-        String attraction = stringRedisTemplate.opsForValue().get(keyId);
+        String json = stringRedisTemplate.opsForValue().get(keyId);
 
-        if (attraction != null) {
-            return JSONUtil.toBean(attraction, Attraction.class);
+        //缓存命中
+        if (StrUtil.isNotBlank(json)) {
+            // 如果查询到的为空，则返回null
+            if ("".equals(json)) {
+                return null;
+            }
+            //返回数据
+            return JSONUtil.toBean(json, Attraction.class);
         }
 
         //缓存未命中查询数据库
         Attraction dbattraction = attractionMapper.getById(id);
+
+        //处理数据库结果
+        if (dbattraction == null) {
+            //解决缓存穿透：将空值存入缓存，设置过期时间 此处设置为5分钟
+            stringRedisTemplate.opsForValue().set(keyId, "", 5, TimeUnit.MINUTES);
+            return null;
+        }
+
         dbattraction.setScore(calculateScore(dbattraction));
 
         //重构缓存

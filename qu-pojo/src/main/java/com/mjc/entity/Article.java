@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 public class Article {
     private Integer id;
     private Integer adminId;      // 发布管理员ID
+    private String adminName;      // 发布管理员名称
     private String title;         // 标题
     private String summary;       // 摘要
     private String contentMd;     // Markdown 原文

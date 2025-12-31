@@ -71,9 +71,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                         "/user/update",
                         "/images/**",
                         "/dailyVisit/**",
-                        "/articles",
-                        "/articles/**",
-                        "/comments/article/**"
+                        "/articles/*"
                 );
     }
 

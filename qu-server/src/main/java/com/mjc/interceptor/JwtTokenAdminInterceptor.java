@@ -1,5 +1,6 @@
 package com.mjc.interceptor;
 
+import com.mjc.annotation.SkipAuth;
 import com.mjc.contant.JwtClaimsConstant;
 import com.mjc.context.BaseContext;
 import com.mjc.properties.JwtProperties;
@@ -39,6 +40,13 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
         if (!(handler instanceof HandlerMethod)) {
             //当前拦截到的不是动态方法，直接放行
             return true;
+        }
+
+        HandlerMethod handlerMethod = (HandlerMethod) handler;
+
+        // 检查方法是否标记了跳过认证注解
+        if (handlerMethod.hasMethodAnnotation(SkipAuth.class)) {
+            return true; // 直接放行，无需认证
         }
 
         //1、从请求头中获取令牌

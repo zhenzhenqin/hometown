@@ -3,6 +3,7 @@ package com.mjc.controller;
 import com.mjc.Result.PageResult;
 import com.mjc.Result.Result;
 import com.mjc.annotation.AutoLog;
+import com.mjc.annotation.SkipAuth;
 import com.mjc.context.BaseContext;
 import com.mjc.entity.Article;
 import com.mjc.queryParam.ArticleQueryParam;
@@ -27,6 +28,7 @@ public class ArticleController {
     /**
      * 分页查询 (前后台通用)
      */
+    @SkipAuth
     @GetMapping
     @Operation(summary = "文章分页查询")
     public Result<PageResult> getList(ArticleQueryParam param) {
@@ -37,6 +39,7 @@ public class ArticleController {
     /**
      * 获取详情 (点击查看全文)
      */
+    @SkipAuth
     @GetMapping("/{id}")
     @Operation(summary = "获取文章详情")
     public Result<Article> getDetail(@PathVariable Integer id) {
