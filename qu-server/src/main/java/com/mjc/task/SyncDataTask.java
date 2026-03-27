@@ -57,7 +57,7 @@ public class SyncDataTask {
     private void syncData(Map<Object, Object> map) {
         if (map.isEmpty()) {
             log.info("Redis 中暂无点赞数据，无需同步");
-            return;
+           return;
         }
 
         // 2. 组装需要更新的实体列表

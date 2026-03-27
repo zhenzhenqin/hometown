@@ -71,7 +71,8 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                         "/user/update",
                         "/images/**",
                         "/dailyVisit/**",
-                        "/articles/*"
+                        "/articles/*",
+                        "/ai/**"              // AI问答接口不需要登录
                 );
     }
 

@@ -224,7 +224,7 @@ public class AttractionServiceImpl implements AttractionService {
             attraction.setScore(score);
             attractionMapper.updateAttraction(attraction);
             clearAttractionCache();
-            return true;
+            return true;    
         }
 
         return false;
